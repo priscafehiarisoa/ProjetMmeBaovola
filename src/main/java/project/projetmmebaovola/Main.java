@@ -15,7 +15,7 @@ public class Main {
     public Main(EtudiantRepository etudiantRepository) {
         this.etudiantRepository = etudiantRepository;
     }
-
+    /*
     @Bean
     CommandLineRunner commandLineRunner (){
         return args -> {
@@ -28,5 +28,5 @@ public class Main {
         };
 
 
-    }
+    }*/
 }
