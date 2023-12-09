@@ -1,5 +1,5 @@
-# pour télecherger le code 
-il faut cliquer sur le bouton vert `code ` 
+# pour télécharger le code 
+il faut cliquer sur le bouton vert `code ` ,
 vous avez le choix entre 
 * le telecharger sous un format .zip
 * copier le lien et le mettre directement dans intellij
