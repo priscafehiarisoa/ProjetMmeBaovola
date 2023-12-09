@@ -1,9 +1,6 @@
 package project.projetmmebaovola.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import project.projetmmebaovola.Repository.EtudiantRepository;
 
 @Entity
@@ -14,6 +11,10 @@ public class Etudiant {
 
     private String nom ;
     private String prenom;
+
+    @ManyToOne
+    @JoinColumn(name="idSalle")
+    private Salle salle;
 
     public String getNom() {
         return nom;
@@ -65,6 +66,21 @@ public class Etudiant {
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", prenom='" + prenom + '\'' +
+                ", salle=" + salle +
                 '}';
     }
+
+    public Etudiant(Long id, String nom, String prenom, Salle salle) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.salle = salle;
+    }
+
+    public Etudiant(String nom, String prenom, Salle salle) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.salle = salle;
+    }
+
 }
