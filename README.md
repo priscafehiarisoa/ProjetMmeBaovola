@@ -1,12 +1,14 @@
-### pour télecherger le code 
-il faut cliquer sur le bouton code 
+# pour télecherger le code 
+il faut cliquer sur le bouton vert `code ` 
 vous avez le choix entre 
 * le telecharger sous un format .zip
 * copier le lien et le mettre directement dans intellij
 
 it'up to you 😉
+### si vous voulez utiliser le format zip : ↓ 
+ dezippez le code et ouvrer-le avec intellij 
 
-# si vous utiliser intellij 
+### si vous voulez utiliser le lien : ↓ 
 
 ### creez votre compte github ici :
 `github.com`
