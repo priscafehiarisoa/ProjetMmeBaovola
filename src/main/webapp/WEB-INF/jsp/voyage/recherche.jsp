@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="project.projetmmebaovola.Model.entity.Voyage" %>
+<%@ page import="project.projetmmebaovola.Recherche" %>
 <%--
   Created by IntelliJ IDEA.
   User: falyarivelo
@@ -12,7 +13,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<Voyage> voyages= (List<Voyage>) request.getAttribute("voyage");
+    List<Recherche> voyages= (List<Recherche>) request.getAttribute("voyage");
 
 %>
 
@@ -33,52 +34,38 @@
                     <br>
                 </form>
 
-            </div>
+        </div>
 
 
-            <div class="table-responsive">
+        <div class="table-responsive">
             <table border="1" class="table">
                 <tr>
                     <th>_</th>
                     <th>date debut de voyage</th>
                     <th>date fin de voyage</th>
                     <th>bouquet</th>
-                    <th>type de voyage</th>
-                    <th>activités</th>
+                    <th>type duré</th>
+                    <th>Activités</th>
                 </tr>
                 <tbody>
 
-                <% for (Voyage voyage: voyages) { %>
+                <% for (Recherche voyage: voyages) { %>
                 <tr>
                     <td><%=voyage.getId()%></td>
                     <td><%=voyage.getDateDebutvoyage()%></td>
                     <td><%=voyage.getDateFinVoyage()%></td>
-                    <td>
-                        <ul>
-                            <%
-                                for (int i = 0; i < voyage.getBouquets().size(); i++) {%>
-                            <li><%=voyage.getBouquets().get(i).getNomBouquet()%></li>
-                            <%}%>
-                        </ul>
-                    </td>
-                    <td><%=voyage.getTypeLieu().getDescriptionLieu()%></td>
-                    <td>
-                        <ul>
-                            <%
-                                for (int i = 0; i < voyage.getListeActivite().size(); i++) {%>
-                            <li><%=voyage.getListeActivite().get(i).getActivite().getNomActivite()%></li>
-                            <%}%>
-                        </ul>
-                    </td>
+                    <td><%=voyage.getNomBouquet()%></td>
+                    <td><%=voyage.getTypedure()%></td>
+                    <td><%=voyage.getNomActivite()%></td>
                 </tr>
                 <% } %>
                 </tbody>
 
             </table>
 
-            </div>
         </div>
     </div>
+</div>
 </div>
 <jsp:include page="../template/footer.jsp" />
 

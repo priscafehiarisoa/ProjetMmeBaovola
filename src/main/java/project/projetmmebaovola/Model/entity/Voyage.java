@@ -18,6 +18,9 @@ public class Voyage {
     private LocalDate dateDebutvoyage;
     private LocalDate dateFinVoyage;
 
+    private String typedure;
+
+
     @OneToMany
     private List<Bouquets> bouquets;
     @ManyToOne
@@ -25,6 +28,17 @@ public class Voyage {
     private TypeLieu typeLieu;
 
     private String lieu ;
+
+    @Transient
+    private List<VoyageActivite> listeActivite;
+
+    public List<VoyageActivite> getListeActivite() {
+        return listeActivite;
+    }
+
+    public void setListeActivite(List<VoyageActivite> listeActivite) {
+        this.listeActivite = listeActivite;
+    }
 
     public LocalDate getDateDebutvoyage() {
         return dateDebutvoyage;
@@ -74,34 +88,45 @@ public class Voyage {
         this.lieu = lieu;
     }
 
-    public Voyage(String lieu,Integer id, LocalDate dateDebutvoyage, LocalDate dateFinVoyage, List<Bouquets> bouquets, TypeLieu typeLieu) {
+    public String getTypedure() {
+        return typedure;
+    }
+
+    public void setTypedure(String typedure) {
+        this.typedure = typedure;
+    }
+
+    public Voyage(String lieu, Integer id, LocalDate dateDebutvoyage, LocalDate dateFinVoyage, Bouquets bouquets, TypeLieu typeLieu,String typedure) {
         setId(id);
         setDateDebutvoyage(dateDebutvoyage);
         setDateFinVoyage(dateFinVoyage);
-        setBouquets(bouquets);
+        setBouquets(List.of(bouquets));
         setTypeLieu(typeLieu);
         setLieu(lieu);
+        setTypedure(typedure);
     }
 
-    public Voyage(String lieu,LocalDate dateDebutvoyage, LocalDate dateFinVoyage, List<Bouquets> bouquets, TypeLieu typeLieu) {
+    public Voyage(String lieu,LocalDate dateDebutvoyage, LocalDate dateFinVoyage, Bouquets bouquets, TypeLieu typeLieu,String typedure) {
         setDateDebutvoyage(dateDebutvoyage);
         setDateFinVoyage(dateFinVoyage);
-        setBouquets(bouquets);
+        setBouquets(List.of(bouquets));
         setTypeLieu(typeLieu);
         setLieu(lieu);
+        setTypedure(typedure);
     }
 
-    public Voyage(LocalDate dateDebutvoyage, LocalDate dateFinVoyage, List<Integer> idbouquets, int typeLieu, String lieu, BouquetsRepository bouquetsRepository, TypeLieuRepository typeLieuRepository) throws Exception {
+    public Voyage(LocalDate dateDebutvoyage, LocalDate dateFinVoyage, Integer idbouquets, int typeLieu, String lieu, BouquetsRepository bouquetsRepository, TypeLieuRepository typeLieuRepository,String typedure) throws Exception {
         setDateDebutvoyage(dateDebutvoyage);
-        List<Bouquets> bouquets=new ArrayList<>();
-        for (int i = 0; i < idbouquets.size(); i++) {
-            Optional<Bouquets> bouquets1= bouquetsRepository.findById(idbouquets.get(i));
+        setTypedure(typedure);
+        setBouquets(new ArrayList<>());
+
+            Optional<Bouquets> bouquets1= bouquetsRepository.findById(idbouquets);
             if(bouquets1.isPresent()){
                 bouquets.add(bouquets1.get());
             }else{
-                throw new Exception("bouquets "+ idbouquets.get(i)+" introuvable");
+                throw new Exception("bouquets "+ idbouquets+" introuvable");
             }
-        }
+
         setBouquets(bouquets);
         setDateFinVoyage(dateFinVoyage);
         Optional<TypeLieu> typeLieu1= typeLieuRepository.findById(typeLieu);

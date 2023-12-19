@@ -7,16 +7,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
-import project.projetmmebaovola.Model.entity.Activite;
-import project.projetmmebaovola.Model.entity.Bouquets;
+import project.projetmmebaovola.Model.entity.*;
+import project.projetmmebaovola.Recherche;
 import project.projetmmebaovola.Repository.CateorieActiviteRepository;
-import project.projetmmebaovola.Model.entity.Voyage;
 import project.projetmmebaovola.Model.util.Utils;
 import project.projetmmebaovola.Repository.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class VoyageController {
@@ -27,19 +28,25 @@ public class VoyageController {
     private final ActiviteRepository activiteRepository;
     private final BouquetActiviteRepository bouquetActiviteRepository;
     private final CateorieActiviteRepository cateorieActiviteRepository;
+    private final VoyageActiviteRepository voyageActiviteRepository;
+    private final RechercheRepository rechercheRepository;
 
     public VoyageController(VoyageRepository voyageRepository,
                             BouquetsRepository bouquetsRepository,
                             TypeLieuRepository typeLieuRepository,
                             ActiviteRepository activiteRepository,
                             BouquetActiviteRepository bouquetActiviteRepository,
-                            CateorieActiviteRepository cateorieActiviteRepository) {
+                            CateorieActiviteRepository cateorieActiviteRepository,
+                            VoyageActiviteRepository voyageActiviteRepository,
+                            RechercheRepository rechercheRepository) {
         this.voyageRepository = voyageRepository;
         this.bouquetsRepository = bouquetsRepository;
         this.typeLieuRepository = typeLieuRepository;
         this.activiteRepository = activiteRepository;
         this.bouquetActiviteRepository = bouquetActiviteRepository;
         this.cateorieActiviteRepository = cateorieActiviteRepository;
+        this.voyageActiviteRepository = voyageActiviteRepository;
+        this.rechercheRepository = rechercheRepository;
     }
 
     // voyage
@@ -47,25 +54,64 @@ public class VoyageController {
     public String getFormVoyage(Model model){
         model.addAttribute("bouquet", bouquetsRepository.findAll());
         model.addAttribute("typeLieu", typeLieuRepository.findAll());
+        model.addAttribute("activite", activiteRepository.findAll());
 
         return "voyage/formVoyage";
     }
     @GetMapping({"/","/listVoyage"})
     public String getListVoyage(Model model){
-        model.addAttribute("voyage", voyageRepository.findAll());
+        List<Voyage> voyage=voyageRepository.findAll();
+        for (int i = 0; i < voyage.size(); i++) {
+            voyage.get(i).setListeActivite(voyageActiviteRepository.findVoyageActiviteByVoyage(voyage.get(i)));
+        }
+        model.addAttribute("voyage", voyage);
         return "voyage/listeVoyage";
     }
     @PostMapping("/newVoyage")
-    public RedirectView saveVoyage(@RequestParam HashMap<String,Object> voyage, @RequestParam("bouquets") List<Integer> idBouquet) throws Exception {
+    public RedirectView saveVoyage(@RequestParam HashMap<String,Object> voyage, @RequestParam("bouquets") Integer idBouquet,
+                                   @RequestParam(value = "activites", required = false) List<String> activites,
+                                   @RequestParam(value = "Quantite_activites", required = false) List<String> quantiteActivites) throws Exception {
         final RedirectView redirectView = new RedirectView("/formVoyage", true);
         LocalDate datedebut= Utils.convertToLocalDate((String) voyage.get("dateDebutvoyage"));
         LocalDate datefin=Utils.convertToLocalDate(String.valueOf(voyage.get("dateFinVoyage")));
-        idBouquet.forEach(System.out::println);
+        String typeDure=String.valueOf(voyage.get("typedure"));
+
+
+        // traiter les activités
+        List<Integer> activitesCochees = new ArrayList<>();
+        List<Double> quantitesCochees = new ArrayList<>();
+
+        // Parcourir les activités et récupérer les quantités correspondantes
+        for (int i = 0; i < activites.size(); i++) {
+            String activiteId = activites.get(i);
+            String quantite = quantiteActivites.get(i);
+
+            // Vérifier si la case à cocher correspondante est cochée
+            if (!activiteId.isEmpty() && !quantite.isEmpty()) {
+                activitesCochees.add(Integer.valueOf(activiteId));
+                quantitesCochees.add(Double.parseDouble(quantite));
+                System.out.println();
+            }
+        }
+
+
 
         int typelieu= Integer.valueOf(String.valueOf(voyage.get("type"))) ;
         String lieu= String.valueOf(voyage.get("lieu")) ;
-        Voyage voyage1= new Voyage(datedebut,datefin,idBouquet,typelieu,lieu,bouquetsRepository,typeLieuRepository);
+        Voyage voyage1= new Voyage(datedebut,datefin,idBouquet,typelieu,lieu,bouquetsRepository,typeLieuRepository,typeDure);
         voyageRepository.save(voyage1);
+
+        List<VoyageActivite> voyageActivites=new ArrayList<>();
+        for (int i = 0; i < activitesCochees.size(); i++) {
+            Optional<Activite> activite= activiteRepository.findById(activitesCochees.get(i));
+            if(!activite.isPresent()){
+                throw new Exception("tsy hita le activite ");
+            }
+            else{
+                voyageActivites.add(new VoyageActivite(activite.get(),quantitesCochees.get(i),voyage1));
+            }
+        }
+        voyageActiviteRepository.saveAll(voyageActivites);
         return redirectView;
     }
 
@@ -73,15 +119,18 @@ public class VoyageController {
     @GetMapping("/listBouquet")
     public String getListBouquet (Model model ){
         List<Bouquets> bouquets=bouquetsRepository.getBouquetsByEtat(0);
-        for (int i = 0; i < bouquets.size(); i++) {
-            bouquets.get(i).setListBouquetActivite(bouquetActiviteRepository);
-        }
+//        for (int i = 0; i < bouquets.size(); i++) {
+//            bouquets.get(i).setListBouquetActivite(bouquetActiviteRepository);
+//        }
         model.addAttribute("bouquet", bouquets );
         return "bouquets/listeBouquet";
     }
 
     @PostMapping("/newBouquet")
-    public RedirectView saveBouquet (@ModelAttribute Bouquets bouquets, @RequestParam("activites") List<Integer> idActivites) throws Exception {
+    public RedirectView saveBouquet (@ModelAttribute Bouquets bouquets
+//            , @RequestParam("activites") List<Integer> idActivites
+    ) throws Exception {
+        List<Integer> idActivites=new ArrayList<>();
         final RedirectView redirectView = new RedirectView("/listBouquet", true);
         bouquets.saveBouquet(idActivites,bouquetsRepository,bouquetActiviteRepository,activiteRepository);
         return redirectView;
@@ -129,5 +178,13 @@ public class VoyageController {
         }
 
         return new RedirectView(redirection, true);
+    }
+
+    @PostMapping("/searchvoyage")
+    public String getSerach(@RequestParam("recherche") String recherche,Model model){
+        List<Recherche> voyages= rechercheRepository.searchvoyage(recherche);
+
+        model.addAttribute("voyage",voyages);
+        return "voyage/recherche";
     }
 }

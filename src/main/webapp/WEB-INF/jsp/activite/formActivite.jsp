@@ -28,9 +28,9 @@
     <div class="card-body">
       <h4 class="card-title">Ajouter une Activité </h4>
       <%--alert --%>
-      <div class="alert alert-danger" role="alert">
-        <%=error%>
-      </div>
+<%--      <div class="alert alert-danger" role="alert">--%>
+<%--        <%=error%>--%>
+<%--      </div>--%>
 
       <%--  end alert --%>
       <form  class="forms-sample" action="${pageContext.request.contextPath}/addNewActivite" method="post" >
@@ -70,10 +70,10 @@
         <div class="form-group ">
           <label >choisir une catégorie d'activité  </label>
           <div class="m-5 row d-inline-flex mx-5">
-            <div class="form-check col-5">
-              <input type="checkbox" class="form-check-input d-inline-flex " name="categories" value="1234">
-              <label class="form-check-label" >test exeption</label>
-            </div>
+<%--            <div class="form-check col-5">--%>
+<%--              <input type="checkbox" class="form-check-input d-inline-flex " name="categories" value="1234">--%>
+<%--              <label class="form-check-label" >test exeption</label>--%>
+<%--            </div>--%>
 
             <% for(int i = 0; i < listActivite.size(); i++) { %>
             <div class="form-check col-5">

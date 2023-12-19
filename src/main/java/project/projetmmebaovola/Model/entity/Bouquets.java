@@ -25,8 +25,8 @@ public class Bouquets {
 
     private String descriptionBouquet;
 
-    @Transient
-    private List<Bouquet_activite> listeBouquetActivite;
+//    @Transient
+//    private List<Bouquet_activite> listeBouquetActivite;
 
     private int etat=0;
 
@@ -42,13 +42,13 @@ public class Bouquets {
         this.etat = etat;
     }
 
-    public List<Bouquet_activite> getListeBouquetActivite() {
-        return listeBouquetActivite;
-    }
-
-    public void setListeBouquetActivite(List<Bouquet_activite> listeBouquetActivite) {
-        this.listeBouquetActivite = listeBouquetActivite;
-    }
+//    public List<Bouquet_activite> getListeBouquetActivite() {
+//        return listeBouquetActivite;
+//    }
+//
+//    public void setListeBouquetActivite(List<Bouquet_activite> listeBouquetActivite) {
+//        this.listeBouquetActivite = listeBouquetActivite;
+//    }
 
     public String getDescriptionBouquet() {
         return descriptionBouquet;
@@ -112,12 +112,12 @@ public class Bouquets {
         bouquetActiviteRepository.saveAll(bouquetActivites);
     }
 
-    public void setListBouquetActivite(BouquetActiviteRepository bouquetActiviteRepository){
-        listeBouquetActivite=bouquetActiviteRepository.getBouquet_activitesByBouquetsAndEtat(this,0);
-    }
-
-    public List<Bouquet_activite> getListBouquetActivite(){
-        return listeBouquetActivite;
-    }
+//    public void setListBouquetActivite(BouquetActiviteRepository bouquetActiviteRepository){
+//        listeBouquetActivite=bouquetActiviteRepository.getBouquet_activitesByBouquetsAndEtat(this,0);
+//    }
+//
+//    public List<Bouquet_activite> getListBouquetActivite(){
+//        return listeBouquetActivite;
+//    }
 
 }

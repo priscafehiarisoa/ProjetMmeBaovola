@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="project.projetmmebaovola.Model.entity.TypeLieu" %>
+<%@ page import="project.projetmmebaovola.Model.entity.Activite" %>
 <jsp:include page="../template/header.jsp" />
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -14,6 +15,11 @@
     }
     if(request.getAttribute("typeLieu")!=null){
         listTypeLieu= (List<TypeLieu>) request.getAttribute("typeLieu");
+    }
+    List<Activite> listActivite= new ArrayList<>();
+
+    if(request.getAttribute("activite")!=null){
+        listActivite= (List<Activite>) request.getAttribute("activite");
     }
 %>
 
@@ -42,26 +48,62 @@
             <%}%>
         </select>    </div>
 
- <%--    nom lieu --%>
-    <div class="form-group">
-        <label for="idEtudiant">Lieu </label>
-        <input type="text" id="wq2" class="form-control" name="lieu" required><br>
+<%-- &lt;%&ndash;    nom lieu &ndash;%&gt;--%>
+<%--    <div class="form-group">--%>
+<%--        <label for="idEtudiant">Lieu </label>--%>
+<%--        <input type="text" id="wq2" class="form-control" name="lieu" required><br>--%>
+<%--    </div>--%>
+
+    <%--    type de durrée d'activité --%>
+    <div class="form-group ">
+        <label >choisir le type de durée  </label>
+        <div class="form-check">
+            <label class="" ></label>
+            <select name="typedure" id="" class="form-control" >
+                <option value="court">court</option>
+                <option value="long">long</option>
+            </select>
+        </div>
     </div>
-
-
     <%--    bouquets liste --%>
     <div class="form-group ">
         <label >Bouquets </label>
         <div class="m-5 row d-inline-flex mx-5">
-            <% for(int i = 0; i < listBouquet.size(); i++) { %>
-            <div class="form-check col-5">
-                <input type="checkbox" class="form-check-input d-inline-flex " id="bouquet<%= i %>" name="bouquets" value="<%= listBouquet.get(i).getId() %>">
-                <label class="form-check-label" for="bouquet<%= i %>"><%= listBouquet.get(i).getNomBouquet() %></label>
+
+            <select name="bouquets" id="">
+                <% for(int i = 0; i < listBouquet.size(); i++) { %>
+                <option value="<%= listBouquet.get(i).getId() %>"><%= listBouquet.get(i).getNomBouquet() %></option>
+                <% } %>
+
+            </select>
+<%--            <div class="form-check col-5">--%>
+<%--                <input type="checkbox" class="form-check-input d-inline-flex " id="bouquet<%= i %>" name="bouquets" value="<%= listBouquet.get(i).getId() %>">--%>
+<%--                <label class="form-check-label" for="bouquet<%= i %>"></label>--%>
+<%--            </div>--%>
+
+        </div>
+    </div>
+    <%--    liste des activités  --%>
+    <div class="form-group ">
+        <label >choisir des activités  </label>
+        <div class="m-5 row d-inline-flex mx-5">
+            <% for(int i = 0; i < listActivite.size(); i++) { %>
+            <div>
+            </div>
+            <div class="form-check col-3">
+                <label class="" for="activite<%= i %>"><%= listActivite.get(i).getNomActivite() %></label>
+
+                <input type="checkbox" class="form-check-input d-inline-flex " id="activite<%= i %>" name="activites" value="<%= listActivite.get(i).getId() %>">
+            </div>
+            <div class="form-check col-8">
+                <input type="number" placeholder="quantite" class=" form-control d-inline-flex "  name="Quantite_activites" >
             </div>
             <% } %>
         </div>
     </div>
-                <button type="submit" class="btn btn-primary me-2">Valider</button>
+
+
+    <button type="submit" class="btn btn-primary me-2">Valider</button>
             </form>
         </div>
     </div>

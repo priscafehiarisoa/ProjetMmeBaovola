@@ -29,7 +29,7 @@
                     <th>_</th>
                     <th>Nom Bouquet</th>
                     <th>description des bouquets </th>
-                    <th>liste des activités</th>
+<%--                    <th>liste des activités</th>--%>
 
                 </tr>
                 <tbody>
@@ -39,14 +39,14 @@
                     <td><%=bouquets1.getId()%></td>
                     <td><%=bouquets1.getNomBouquet()%></td>
                     <td><%=bouquets1.getDescriptionBouquet()%></td>
-                    <td>
-                        <ul>
-                            <%
-                                for (int i = 0; i < bouquets1.getListBouquetActivite().size(); i++) {%>
-                            <li><%=bouquets1.getListBouquetActivite().get(i).getActivite().getNomActivite()%></li>
-                            <%}%>
-                        </ul>
-                    </td>
+<%--                    <td>--%>
+<%--                        <ul>--%>
+<%--                            <%--%>
+<%--                                for (int i = 0; i < bouquets1.getListBouquetActivite().size(); i++) {%>--%>
+<%--                            <li><%=bouquets1.getListBouquetActivite().get(i).getActivite().getNomActivite()%></li>--%>
+<%--                            <%}%>--%>
+<%--                        </ul>--%>
+<%--                    </td>--%>
 
                 </tr>
                 <% } %>

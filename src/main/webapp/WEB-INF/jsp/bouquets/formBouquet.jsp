@@ -33,18 +33,18 @@
                     <br>
                 </div>
 
-    <%--    liste des activités  --%>
-    <div class="form-group ">
-        <label >choisir des activités  </label>
-        <div class="m-5 row d-inline-flex mx-5">
-            <% for(int i = 0; i < listActivite.size(); i++) { %>
-            <div class="form-check col-5">
-                <input type="checkbox" class="form-check-input d-inline-flex " id="activite<%= i %>" name="activites" value="<%= listActivite.get(i).getId() %>">
-                <label class="form-check-label" for="bouquet<%= i %>"><%= listActivite.get(i).getNomActivite() %></label>
-            </div>
-            <% } %>
-        </div>
-    </div>
+<%--    &lt;%&ndash;    liste des activités  &ndash;%&gt;--%>
+<%--    <div class="form-group ">--%>
+<%--        <label >choisir des activités  </label>--%>
+<%--        <div class="m-5 row d-inline-flex mx-5">--%>
+<%--            <% for(int i = 0; i < listActivite.size(); i++) { %>--%>
+<%--            <div class="form-check col-5">--%>
+<%--                <input type="checkbox" class="form-check-input d-inline-flex " id="activite<%= i %>" name="activites" value="<%= listActivite.get(i).getId() %>">--%>
+<%--                <label class="form-check-label" for="bouquet<%= i %>"><%= listActivite.get(i).getNomActivite() %></label>--%>
+<%--            </div>--%>
+<%--            <% } %>--%>
+<%--        </div>--%>
+<%--    </div>--%>
 
                 <button type="submit" class="btn btn-primary me-2">Valider</button>
             </form>
