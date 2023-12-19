@@ -15,7 +15,7 @@
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#Voyage" aria-expanded="false"
            aria-controls="Voyage">
-          <i class="menu-icon mdi mdi-card-text-outline"></i>
+          <i class="menu-icon mdi mdi-earth"></i>
           <span class="menu-title">Voyage</span>
           <i class="menu-arrow"></i>
         </a>
@@ -31,7 +31,7 @@
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#note" aria-expanded="false"
            aria-controls="note">
-          <i class="menu-icon mdi mdi-card-text-outline"></i>
+          <i class="menu-icon mdi mdi-map-check-outline"></i>
           <span class="menu-title">Bouquets</span>
           <i class="menu-arrow"></i>
         </a>
@@ -47,7 +47,7 @@
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#activite" aria-expanded="false"
            aria-controls="activite">
-          <i class="menu-icon mdi mdi-card-text-outline"></i>
+          <i class="menu-icon mdi mdi-cards-variant"></i>
           <span class="menu-title">Activités</span>
           <i class="menu-arrow"></i>
         </a>

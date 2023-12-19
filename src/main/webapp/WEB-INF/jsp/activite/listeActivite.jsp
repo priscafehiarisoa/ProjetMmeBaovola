@@ -4,6 +4,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="project.projetmmebaovola.Model.entity.Voyage" %>
 <%@ page import="project.projetmmebaovola.Model.entity.Bouquets" %>
+<%@ page import="project.projetmmebaovola.Model.entity.Activite" %>
 <%--
   Created by IntelliJ IDEA.
   User: falyarivelo
@@ -13,7 +14,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-  List<Bouquets> bouquets= (List<Bouquets>) request.getAttribute("bouquet");
+  List<Activite> activites= (List<Activite>) request.getAttribute("activite");
 
 %>
 
@@ -27,23 +28,23 @@
         <table border="1" class="table">
           <tr>
             <th>_</th>
-            <th>Nom Bouquet</th>
-            <th>description des bouquets </th>
-            <th>liste des activités</th>
+            <th>Nom de l'activité</th>
+            <th>description </th>
+            <th>catégories d'activité</th>
 
           </tr>
           <tbody>
 
-          <% for (Bouquets bouquets1: bouquets) { %>
+          <% for (Activite activite1: activites) { %>
           <tr>
-            <td><%=bouquets1.getId()%></td>
-            <td><%=bouquets1.getNomBouquet()%></td>
-            <td><%=bouquets1.getDescriptionBouquet()%></td>
+            <td><%=activite1.getId()%></td>
+            <td><%=activite1.getNomActivite()%></td>
+            <td><%=activite1.getDescription()%></td>
             <td>
               <ul>
                 <%
-                  for (int i = 0; i < bouquets1.getListBouquetActivite().size(); i++) {%>
-                <li><%=bouquets1.getListBouquetActivite().get(i).getActivite().getNomActivite()%></li>
+                  for (int i = 0; i < activite1.getListeCategorieActivite().size(); i++) {%>
+                <li><%=activite1.getListeCategorieActivite().get(i).getNomCAtegorie()%></li>
                 <%}%>
               </ul>
             </td>
@@ -58,5 +59,33 @@
     </div>
   </div>
 </div>
+
+<%--<div class="col-lg-12 grid-margin stretch-card">--%>
+<%--  <div class="card">--%>
+<%--    <div class="card-body">--%>
+<%--      <h4 class="card-title">Liste des bouquets</h4>--%>
+<%--      <div class="card-list">--%>
+<%--        <% for (Activite activite1: activites) { %>--%>
+<%--        <div class="card-item">--%>
+<%--          <div class="card-header">--%>
+<%--            <h5><%=activite1.getNomActivite()%></h5>--%>
+<%--            <p><%=activite1.getDescription()%></p>--%>
+<%--          </div>--%>
+<%--          <div class="card-content">--%>
+<%--            <p><strong>Nom de l'activité:</strong> <%=activite1.getNomActivite()%></p>--%>
+<%--            <p><strong>Description:</strong> <%=activite1.getDescription()%></p>--%>
+<%--            <p><strong>Catégories d'activité:</strong></p>--%>
+<%--            <ul>--%>
+<%--              <% for (int i = 0; i < activite1.getListeCategorieActivite().size(); i++) {%>--%>
+<%--              <li><%=activite1.getListeCategorieActivite().get(i).getNomCAtegorie()%></li>--%>
+<%--              <%}%>--%>
+<%--            </ul>--%>
+<%--          </div>--%>
+<%--        </div>--%>
+<%--        <% } %>--%>
+<%--      </div>--%>
+<%--    </div>--%>
+<%--  </div>--%>
+<%--</div>--%>
 <jsp:include page="../template/footer.jsp" />
 

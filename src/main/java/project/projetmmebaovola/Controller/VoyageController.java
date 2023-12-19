@@ -112,6 +112,8 @@ public class VoyageController {
 
     @GetMapping("/listActivite")
     public String loadViewListActivite(Model model){
+        model.addAttribute("activite",activiteRepository.findAll());
+
         return "activite/listeActivite";
     }
 
