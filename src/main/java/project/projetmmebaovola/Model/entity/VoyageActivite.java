@@ -65,4 +65,14 @@ public class VoyageActivite {
 
     public VoyageActivite() {
     }
+
+    @Override
+    public String toString() {
+        return "VoyageActivite{" +
+                "id=" + id +
+                ", activite=" + activite +
+                ", voyage=" + voyage +
+                ", quantite=" + quantite +
+                '}';
+    }
 }

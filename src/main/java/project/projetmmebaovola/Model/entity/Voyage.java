@@ -21,8 +21,8 @@ public class Voyage {
     private String typedure;
 
 
-    @OneToMany
-    private List<Bouquets> bouquets;
+    @ManyToOne
+    private Bouquets bouquets;
     @ManyToOne
     @JoinColumn(name = "idTypeLieu")
     private TypeLieu typeLieu;
@@ -56,11 +56,11 @@ public class Voyage {
         this.dateFinVoyage = dateFinVoyage;
     }
 
-    public List<Bouquets> getBouquets() {
+    public Bouquets getBouquets() {
         return bouquets;
     }
 
-    public void setBouquets(List<Bouquets> bouquets) {
+    public void setBouquets(Bouquets bouquets) {
         this.bouquets = bouquets;
     }
 
@@ -100,7 +100,7 @@ public class Voyage {
         setId(id);
         setDateDebutvoyage(dateDebutvoyage);
         setDateFinVoyage(dateFinVoyage);
-        setBouquets(List.of(bouquets));
+        setBouquets((bouquets));
         setTypeLieu(typeLieu);
         setLieu(lieu);
         setTypedure(typedure);
@@ -109,7 +109,7 @@ public class Voyage {
     public Voyage(String lieu,LocalDate dateDebutvoyage, LocalDate dateFinVoyage, Bouquets bouquets, TypeLieu typeLieu,String typedure) {
         setDateDebutvoyage(dateDebutvoyage);
         setDateFinVoyage(dateFinVoyage);
-        setBouquets(List.of(bouquets));
+        setBouquets(bouquets);
         setTypeLieu(typeLieu);
         setLieu(lieu);
         setTypedure(typedure);
@@ -118,11 +118,10 @@ public class Voyage {
     public Voyage(LocalDate dateDebutvoyage, LocalDate dateFinVoyage, Integer idbouquets, int typeLieu, String lieu, BouquetsRepository bouquetsRepository, TypeLieuRepository typeLieuRepository,String typedure) throws Exception {
         setDateDebutvoyage(dateDebutvoyage);
         setTypedure(typedure);
-        setBouquets(new ArrayList<>());
 
             Optional<Bouquets> bouquets1= bouquetsRepository.findById(idbouquets);
             if(bouquets1.isPresent()){
-                bouquets.add(bouquets1.get());
+                setBouquets(bouquets1.get());
             }else{
                 throw new Exception("bouquets "+ idbouquets+" introuvable");
             }

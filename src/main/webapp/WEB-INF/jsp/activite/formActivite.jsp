@@ -4,6 +4,7 @@
 <%@ page import="project.projetmmebaovola.Model.entity.TypeLieu" %>
 <%@ page import="project.projetmmebaovola.Model.entity.Activite" %>
 <%@ page import="project.projetmmebaovola.Model.entity.CateorieActivite" %>
+
 <jsp:include page="../template/header.jsp" />
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -13,7 +14,6 @@
   if(request.getAttribute("activite")!=null){
     listActivite= (List<CateorieActivite>) request.getAttribute("activite");
   }
- out.println(request.getAttribute("error"));
   String error="";
  if (request.getAttribute("error")!=null)
  {
@@ -27,6 +27,7 @@
   <div class="card">
     <div class="card-body">
       <h4 class="card-title">Ajouter une Activité </h4>
+        <%= request.getAttribute("error")%>
       <%--alert --%>
 <%--      <div class="alert alert-danger" role="alert">--%>
 <%--        <%=error%>--%>

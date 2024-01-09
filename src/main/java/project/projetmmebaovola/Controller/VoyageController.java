@@ -104,13 +104,14 @@ public class VoyageController {
         List<VoyageActivite> voyageActivites=new ArrayList<>();
         for (int i = 0; i < activitesCochees.size(); i++) {
             Optional<Activite> activite= activiteRepository.findById(activitesCochees.get(i));
-            if(!activite.isPresent()){
+            if(activite.isEmpty()){
                 throw new Exception("tsy hita le activite ");
             }
             else{
                 voyageActivites.add(new VoyageActivite(activite.get(),quantitesCochees.get(i),voyage1));
             }
         }
+        voyageActivites.forEach(System.out::println);
         voyageActiviteRepository.saveAll(voyageActivites);
         return redirectView;
     }
@@ -170,6 +171,7 @@ public class VoyageController {
     public RedirectView addNewActivite(@ModelAttribute Activite activite, @RequestParam("categories") List<Integer> categories,Model model)  {
        String redirection= "/listActivite";
         try{
+            System.out.println("saved huhu yuhu ");
         activite.saveActivite(activiteRepository,cateorieActiviteRepository,categories);}
         catch (Exception e){
             model.addAttribute("error",e.getMessage());

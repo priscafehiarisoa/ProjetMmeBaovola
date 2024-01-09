@@ -55,10 +55,7 @@
                     <td><%=voyage.getDateFinVoyage()%></td>
                     <td>
                         <ul>
-                            <%
-                                for (int i = 0; i < voyage.getBouquets().size(); i++) {%>
-                            <li><%=voyage.getBouquets().get(i).getNomBouquet()%></li>
-                            <%}%>
+                            <li><%=voyage.getBouquets().getNomBouquet()%></li>
                         </ul>
                     </td>
                     <td><%=voyage.getTypeLieu().getDescriptionLieu()%></td>

@@ -24,7 +24,7 @@ public class Activite {
     private int duree;
     private String typedure;
     private int etat=0;
-    @OneToMany
+    @ManyToMany
     private List<CateorieActivite> listeCategorieActivite;
 
     public int getEtat() {
@@ -113,5 +113,6 @@ public class Activite {
         }
         setListeCategorieActivite(cateorieActivites);
         activiteRepository.save(this);
+        System.out.println("here you go man ");
     }
 }
