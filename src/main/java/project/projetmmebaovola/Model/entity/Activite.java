@@ -26,11 +26,20 @@ public class Activite {
     private int etat=0;
     @ManyToMany
     private List<CateorieActivite> listeCategorieActivite;
-
+    private double tarif;
     public int getEtat() {
         return etat;
     }
+  public double getTarif(){
+        return tarif;
+  }
 
+  public void setTarif(double tarif) throws Exception{
+        if(tarif<0){
+            throw new Exception("montant ivalide");
+        }
+        this.tarif=tarif;
+  }
     public void setEtat(int etat) {
         this.etat = etat;
     }
@@ -83,19 +92,21 @@ public class Activite {
         this.id = id;
     }
 
-    public Activite(Integer id, String nomActivite, String descrition, int duree, String typedure) {
+    public Activite(Integer id, String nomActivite, String descrition, int duree, String typedure,double tarif) throws Exception {
         setId(id);
         setDescription(descrition);
         setNomActivite(nomActivite);
         setDuree(duree);
         setTypedure(typedure);
+        setTarif(tarif);
     }
 
-    public Activite(String nomActivite, String descrition, int duree, String typedure) {
+    public Activite(String nomActivite, String descrition, int duree, String typedure,double tarif) throws Exception {
         setDescription(descrition);
         setNomActivite(nomActivite);
         setDuree(duree);
         setTypedure(typedure);
+        setTarif(tarif);
     }
 
     public Activite() {

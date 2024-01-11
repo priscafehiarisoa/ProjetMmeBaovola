@@ -12,6 +12,8 @@ import project.projetmmebaovola.Recherche;
 import project.projetmmebaovola.Repository.CateorieActiviteRepository;
 import project.projetmmebaovola.Model.util.Utils;
 import project.projetmmebaovola.Repository.*;
+import project.projetmmebaovola.Tarifvoyage;
+import project.projetmmebaovola.TarifvoyageRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class VoyageController {
     private final CateorieActiviteRepository cateorieActiviteRepository;
     private final VoyageActiviteRepository voyageActiviteRepository;
     private final RechercheRepository rechercheRepository;
+    private final TarifvoyageRepository tarifvoyageRepository;
 
     public VoyageController(VoyageRepository voyageRepository,
                             BouquetsRepository bouquetsRepository,
@@ -38,7 +41,8 @@ public class VoyageController {
                             BouquetActiviteRepository bouquetActiviteRepository,
                             CateorieActiviteRepository cateorieActiviteRepository,
                             VoyageActiviteRepository voyageActiviteRepository,
-                            RechercheRepository rechercheRepository) {
+                            RechercheRepository rechercheRepository,
+                            TarifvoyageRepository tarifvoyageRepository) {
         this.voyageRepository = voyageRepository;
         this.bouquetsRepository = bouquetsRepository;
         this.typeLieuRepository = typeLieuRepository;
@@ -47,6 +51,7 @@ public class VoyageController {
         this.cateorieActiviteRepository = cateorieActiviteRepository;
         this.voyageActiviteRepository = voyageActiviteRepository;
         this.rechercheRepository = rechercheRepository;
+        this.tarifvoyageRepository = tarifvoyageRepository;
     }
 
     // voyage
@@ -188,5 +193,16 @@ public class VoyageController {
 
         model.addAttribute("voyage",voyages);
         return "voyage/recherche";
+    }
+
+    @PostMapping("/VoyageTarif")
+    public String getVoyageTarif(@RequestParam("debut") double debut, @RequestParam("fin") double fin,Model model){
+        List<HashMap<String,Object>> listVoyage= Tarifvoyage.getVoyage_Tarif(debut,fin,voyageRepository,tarifvoyageRepository,voyageActiviteRepository);
+        model.addAttribute("tarifVoyage",listVoyage);
+        return "activite/formTarif";
+    }
+    @GetMapping("/getTarif")
+    public String getTarifPage(){
+        return "activite/formTarif";
     }
 }

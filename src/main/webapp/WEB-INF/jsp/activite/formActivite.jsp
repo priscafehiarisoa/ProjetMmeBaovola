@@ -54,6 +54,12 @@
           <input type="text" id="idEtudiant3" class="form-control " name="duree" required> </input>
           <br>
         </div>
+            <%-- tarif --%>
+            <div class="form-group">
+                <label>Tarif </label>
+                <input type="number"  class="form-control " name="tarif" required> </input>
+                <br>
+            </div>
 
         <%--    type de durrée d'activité --%>
         <div class="form-group ">
@@ -65,6 +71,7 @@
                 <option value="jours">jours</option>
               </select>
             </div>
+
         </div>
 
           <%--    liste des activités  --%>

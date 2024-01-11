@@ -23,6 +23,7 @@
           <ul class="nav flex-column sub-menu">
             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/formVoyage">ajouter</a></li>
             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/listVoyage">liste</a></li>
+            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/getTarif">tarif voyage</a></li>
           </ul>
         </div>
       </li>

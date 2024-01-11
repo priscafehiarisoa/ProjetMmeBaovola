@@ -30,6 +30,7 @@
             <th>_</th>
             <th>Nom de l'activité</th>
             <th>description </th>
+            <th> tarif </th>
             <th>catégories d'activité</th>
 
           </tr>
@@ -40,6 +41,7 @@
             <td><%=activite1.getId()%></td>
             <td><%=activite1.getNomActivite()%></td>
             <td><%=activite1.getDescription()%></td>
+            <td><%=activite1.getTarif()%></td>
             <td>
               <ul>
                 <%

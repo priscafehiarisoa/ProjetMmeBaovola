@@ -63,7 +63,7 @@
                         <ul>
                             <%
                                 for (int i = 0; i < voyage.getListeActivite().size(); i++) {%>
-                            <li><%=voyage.getListeActivite().get(i).getActivite().getNomActivite()%></li>
+                            <li><%=voyage.getListeActivite().get(i).getActivite().getNomActivite()%> (<%=(int)voyage.getListeActivite().get(i).getQuantite()%>)</li>
                             <%}%>
                         </ul>
                     </td>
