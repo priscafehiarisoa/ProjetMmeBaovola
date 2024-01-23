@@ -1,8 +1,9 @@
-package project.projetmmebaovola;
+package project.projetmmebaovola.Model.view;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.Immutable;
-import project.projetmmebaovola.Model.entity.Voyage;
+import project.projetmmebaovola.Model.entity.voyage.Voyage;
+import project.projetmmebaovola.Repository.TarifvoyageRepository;
 import project.projetmmebaovola.Repository.VoyageActiviteRepository;
 import project.projetmmebaovola.Repository.VoyageRepository;
 

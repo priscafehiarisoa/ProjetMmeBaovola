@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -38,12 +39,26 @@ public class Utils {
         return finalTime;
     }
 
+    public static LocalDateTime convertToDateTime(String timeString) {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        LocalDateTime DL;
+        try{
+            DL= LocalDateTime.parse(timeString, formatter);
+        }catch (Exception e){
+            DL= LocalDateTime.parse(timeString+":00", formatter);
+        }
+        return DL;
+    }
+
+
     public static void main(String[] args) throws ParseException {
-        String dateString = "2023-12-11";
+        String dateString = "2023-12-11 09:30";
         String timeString = "09:30";
-        System.out.println("LD "+convertToLocalDate(dateString));
-        System.out.println("SD "+stringToDate(dateString));
-        System.out.println("ST "+convertToTime(timeString));
+//        System.out.println("LD "+convertToLocalDate(dateString));
+//        System.out.println("SD "+stringToDate(dateString));
+//        System.out.println("ST "+convertToTime(timeString));
+        System.out.println("LDT "+convertToDateTime(dateString));
         LocalTime initialTime = LocalTime.parse("12:00:00");
         int minutesAndSeconds = 52;
         long totalSeconds = (long) (minutesAndSeconds * 60);

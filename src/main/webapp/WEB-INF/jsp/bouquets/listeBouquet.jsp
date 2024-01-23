@@ -2,8 +2,8 @@
 
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="project.projetmmebaovola.Model.entity.Voyage" %>
-<%@ page import="project.projetmmebaovola.Model.entity.Bouquets" %>
+<%@ page import="project.projetmmebaovola.Model.entity.voyage.Voyage" %>
+<%@ page import="project.projetmmebaovola.Model.entity.bouquet.Bouquets" %>
 <%--
   Created by IntelliJ IDEA.
   User: falyarivelo

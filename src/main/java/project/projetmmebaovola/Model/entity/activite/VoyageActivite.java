@@ -1,6 +1,7 @@
-package project.projetmmebaovola.Model.entity;
+package project.projetmmebaovola.Model.entity.activite;
 
 import jakarta.persistence.*;
+import project.projetmmebaovola.Model.entity.voyage.Voyage;
 
 @Entity
 public class VoyageActivite {

@@ -3,51 +3,62 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="project.projetmmebaovola.Model.entity.voyage.Voyage" %><%--
   Created by IntelliJ IDEA.
-  User: Valisoa
-  Date: 09/01/2024
-  Time: 11:43
+  User: priscafehiarisoadama
+  Date: 16/01/2024
+  Time: 14:27
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="../template/header.jsp" />
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% List<HashMap<String,Object>> listVoyage=new ArrayList<>();
-if (request.getAttribute("tarifVoyage")!=null){
-    listVoyage= (List<HashMap<String, Object>>) request.getAttribute("tarifVoyage");
-}%>
-
+<%
+    List<HashMap<String,Object>> hashMaps=new ArrayList<>();
+    if(request.getAttribute("benefices")!=null){
+        hashMaps= (List<HashMap<String,Object>>) request.getAttribute("benefices");
+    }
+%>
 
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">liste des voyages </h4>
             <div class="form-group">
-                <form action="VoyageTarif"  method="post">
-                 <label >debut </label>
-                 <input type="numer"  class="form-control " name="debut" required>
-                <br>
-                 <label> fin</label>
-                <input type="number" class="form-control"  name="fin" required>
+                <form action="getListBenefices"  method="post">
+                    <label >debut </label>
+                    <input type="number"  class="form-control " name="prix1" required>
+                    <br>
+                    <label> fin</label>
+                    <input type="number" class="form-control"  name="prix2" required>
                     <button type="submit" class="btn btn-primary me-2">Valider</button>
 
                 </form>
             </div>
+            <div>
+                <% if (request.getAttribute("erreur")!=null){%>
+                <h5 style="color: #f54141"><%=request.getAttribute("erreur")%></h5>
+                <%}%>
+            </div>
+
 
             <div class="table-responsive">
+                <% if (request.getAttribute("range_text")!=null){%>
+                <h3><%=request.getAttribute("range_text")%></h3>
+                <%}%>
                 <table border="1" class="table">
                     <tr>
                         <th>_</th>
-                        <th>date debut de voyage</th>
-                        <th>date fin de voyage</th>
+                        <th>dates</th>
                         <th>bouquet</th>
                         <th>type de voyage</th>
                         <th>activités</th>
-                        <th> Tarif</th>
+                        <th> benefices</th>
+                        <th> taux Journalier ouvriers</th>
+                        <th> prix Activite</th>
+                        <th> prix unitaire Voyage</th>
                     </tr>
 
                     <%
-                        if(request.getAttribute("tarifVoyage")!=null){
-                        for (HashMap<String,Object> voyage:listVoyage) { %>
+                        if(request.getAttribute("benefices")!=null){
+                            for (HashMap<String,Object> voyage:hashMaps) { %>
                     <tr>
                         <td><%=((Voyage)voyage.get("voyage")).getId()%></td>
                         <td><%=((Voyage)voyage.get("voyage")).getDateDebutvoyage()%></td>
@@ -67,16 +78,23 @@ if (request.getAttribute("tarifVoyage")!=null){
                             </ul>
                         </td>
                         <td>
-                            <%=voyage.get("tarif")%>
+                            <%=voyage.get("benefices")%>
+                        </td>
+                        <td>
+                            <%=voyage.get("tauxJournalierOuvriers")%>
+                        </td>
+                        <td>
+                            <%=voyage.get("prixActivite")%>
+                        </td>
+                        <td>
+                            <%=voyage.get("prixUnitaireVoyage")%>
                         </td>
                     </tr>
                     <% }
-                        } %>
+                    } %>
                     </tbody>
 
                 </table>
+            </div>
         </div>
     </div>
-</div>
-
-

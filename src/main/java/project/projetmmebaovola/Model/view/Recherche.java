@@ -1,4 +1,4 @@
-package project.projetmmebaovola;
+package project.projetmmebaovola.Model.view;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

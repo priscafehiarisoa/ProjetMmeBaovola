@@ -1,4 +1,4 @@
-package project.projetmmebaovola.Model.entity;
+package project.projetmmebaovola.Model.entity.voyage;
 
 import jakarta.persistence.*;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -2,9 +2,9 @@
 
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="project.projetmmebaovola.Model.entity.Voyage" %>
-<%@ page import="project.projetmmebaovola.Model.entity.Bouquets" %>
-<%@ page import="project.projetmmebaovola.Model.entity.Activite" %>
+<%@ page import="project.projetmmebaovola.Model.entity.voyage.Voyage" %>
+<%@ page import="project.projetmmebaovola.Model.entity.bouquet.Bouquets" %>
+<%@ page import="project.projetmmebaovola.Model.entity.activite.Activite" %>
 <%--
   Created by IntelliJ IDEA.
   User: falyarivelo
@@ -23,7 +23,15 @@
 <div class="col-lg-12 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">liste des bouquets </h4>
+      <h4 class="card-title">liste des Activites </h4>
+      <div class="form-group">
+        <form action="${pageContext.request.contextPath}/rechercheActivite" method="get">
+          <label for="idEtudiant3">recherche </label>
+          <input type="text" id="idEtudiant3" class="form-control " name="recherche" required> </input>
+          <br>
+        </form>
+
+      </div>
       <div class="table-responsive">
         <table border="1" class="table">
           <tr>
@@ -32,6 +40,8 @@
             <th>description </th>
             <th> tarif </th>
             <th>catégories d'activité</th>
+            <th>-</th>
+            <th>-</th>
 
           </tr>
           <tbody>
@@ -50,6 +60,9 @@
                 <%}%>
               </ul>
             </td>
+            <td><a href="/getUpdateActivitepage/<%=activite1.getId()%>">modifier</a></td>
+            <td><a href="/deleteActivite/<%=activite1.getId()%>">supprimer</a></td>
+
 
           </tr>
           <% } %>

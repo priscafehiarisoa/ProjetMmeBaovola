@@ -1,4 +1,4 @@
-package project.projetmmebaovola.Model.entity;
+package project.projetmmebaovola.Model.entity.activite;
 
 import jakarta.persistence.*;
 import project.projetmmebaovola.Repository.ActiviteRepository;

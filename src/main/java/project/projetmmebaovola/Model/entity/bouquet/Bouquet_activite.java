@@ -1,6 +1,7 @@
-package project.projetmmebaovola.Model.entity;
+package project.projetmmebaovola.Model.entity.bouquet;
 
 import jakarta.persistence.*;
+import project.projetmmebaovola.Model.entity.activite.Activite;
 
 import java.util.List;
 

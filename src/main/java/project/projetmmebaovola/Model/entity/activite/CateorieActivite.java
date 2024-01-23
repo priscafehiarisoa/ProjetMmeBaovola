@@ -1,4 +1,4 @@
-package project.projetmmebaovola.Model.entity;
+package project.projetmmebaovola.Model.entity.activite;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

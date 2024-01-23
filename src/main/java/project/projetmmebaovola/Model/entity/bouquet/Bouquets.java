@@ -1,6 +1,7 @@
-package project.projetmmebaovola.Model.entity;
+package project.projetmmebaovola.Model.entity.bouquet;
 
 import jakarta.persistence.*;
+import project.projetmmebaovola.Model.entity.activite.Activite;
 import project.projetmmebaovola.Repository.ActiviteRepository;
 import project.projetmmebaovola.Repository.BouquetActiviteRepository;
 import project.projetmmebaovola.Repository.BouquetsRepository;

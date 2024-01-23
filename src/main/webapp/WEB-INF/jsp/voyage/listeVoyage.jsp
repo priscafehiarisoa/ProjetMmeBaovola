@@ -2,7 +2,7 @@
 
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="project.projetmmebaovola.Model.entity.Voyage" %>
+<%@ page import="project.projetmmebaovola.Model.entity.voyage.Voyage" %>
 <%--
   Created by IntelliJ IDEA.
   User: falyarivelo
@@ -45,6 +45,9 @@
                     <th>bouquet</th>
                     <th>type de voyage</th>
                     <th>activités</th>
+                    <th>prix Voyage</th>
+                    <th>-</th>
+                    <th>-</th>
                 </tr>
                 <tbody>
 
@@ -67,6 +70,9 @@
                             <%}%>
                         </ul>
                     </td>
+                    <td><%=voyage.getPrixUnitaireVoyage()%></td>
+                    <td><a href="/updateVoyage/<%=voyage.getId()%>">modifier</a></td>
+                    <td><a href="/updateVoyage/<%=voyage.getId()%>">supprimer</a></td>
                 </tr>
                 <% } %>
                 </tbody>

@@ -1,11 +1,12 @@
-package project.projetmmebaovola.Model.entity;
+package project.projetmmebaovola.Model.entity.voyage;
 
 import jakarta.persistence.*;
+import project.projetmmebaovola.Model.entity.bouquet.Bouquets;
+import project.projetmmebaovola.Model.entity.activite.VoyageActivite;
 import project.projetmmebaovola.Repository.BouquetsRepository;
 import project.projetmmebaovola.Repository.TypeLieuRepository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,15 @@ public class Voyage {
     private TypeLieu typeLieu;
 
     private String lieu ;
+    private double prixUnitaireVoyage;
+
+    public double getPrixUnitaireVoyage() {
+        return prixUnitaireVoyage;
+    }
+
+    public void setPrixUnitaireVoyage(double prixUnitaireVoyage) {
+        this.prixUnitaireVoyage = prixUnitaireVoyage;
+    }
 
     @Transient
     private List<VoyageActivite> listeActivite;
@@ -141,4 +151,18 @@ public class Voyage {
 
     public Voyage() {
     }
+
+//    @Override
+//    public String toString() {
+//        return "Voyage{" +
+//                "id=" + id +
+//                ", dateDebutvoyage=" + dateDebutvoyage +
+//                ", dateFinVoyage=" + dateFinVoyage +
+//                ", typedure='" + typedure + '\'' +
+//                ", bouquets=" + bouquets +
+//                ", typeLieu=" + typeLieu +
+//                ", lieu='" + lieu + '\'' +
+//                ", listeActivite=" + listeActivite +
+//                '}';
+//    }
 }

@@ -1,9 +1,9 @@
-<%@ page import="project.projetmmebaovola.Model.entity.Bouquets" %>
+<%@ page import="project.projetmmebaovola.Model.entity.bouquet.Bouquets" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="project.projetmmebaovola.Model.entity.TypeLieu" %>
-<%@ page import="project.projetmmebaovola.Model.entity.Activite" %>
-<%@ page import="project.projetmmebaovola.Model.entity.CateorieActivite" %>
+<%@ page import="project.projetmmebaovola.Model.entity.voyage.TypeLieu" %>
+<%@ page import="project.projetmmebaovola.Model.entity.activite.Activite" %>
+<%@ page import="project.projetmmebaovola.Model.entity.activite.CateorieActivite" %>
 
 <jsp:include page="../template/header.jsp" />
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
