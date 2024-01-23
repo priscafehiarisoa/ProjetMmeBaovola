@@ -30,6 +30,15 @@ public class Voyage {
 
     private String lieu ;
     private double prixUnitaireVoyage;
+    private int etat=0;
+
+    public int getEtat() {
+        return etat;
+    }
+
+    public void setEtat(int etat) {
+        this.etat = etat;
+    }
 
     public double getPrixUnitaireVoyage() {
         return prixUnitaireVoyage;
