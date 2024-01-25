@@ -1,10 +1,14 @@
 package project.projetmmebaovola.Model.entity.voyage;
 
+import ch.qos.logback.core.model.INamedModel;
 import jakarta.persistence.*;
+import project.projetmmebaovola.Model.entity.client.Client;
+import project.projetmmebaovola.Model.entity.voyage.Voyage;
 
 import java.time.LocalDate;
 
 @Entity
+
 public class ReservationVoyage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,48 +18,27 @@ public class ReservationVoyage {
     @ManyToOne
     @JoinColumn(name = "idVoyage")
     private  Voyage voyage;
-    private String nomClient;
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setNombreRervation(Integer nombreRervation) {
-        this.nombreRervation = nombreRervation;
-    }
-
-    public String getNomClient() {
-        return nomClient;
-    }
-
-    public void setNomClient(String nomClient) {
-        this.nomClient = nomClient;
-    }
-
-    public ReservationVoyage(Integer id, Integer nombreRervation, Voyage voyage) throws Exception {
-        setId(id);
-        setNombreRervation(nombreRervation);
-        setDateReservation(LocalDate.now());
-        setVoyage(voyage);
-    }
-
-    public ReservationVoyage(Integer nombreRervation,  Voyage voyage) throws Exception {
-        setNombreRervation(nombreRervation);
-        setDateReservation(LocalDate.now());
-        setVoyage(voyage);
-    }
+    @ManyToOne
+    @JoinColumn(name="idClient")
+    private Client client;
+   private int etat;
 
     public ReservationVoyage() {
+
     }
 
-    public Voyage getVoyage() {
-        return voyage;
+    public Client getClient() {
+        return client;
     }
 
-    public void setVoyage(Voyage voyage) {
-        this.voyage = voyage;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
+    public int getEtat() {
+        return etat;
+    }
+ public void setEtat(int etat){this.etat=etat;}
     public Integer getId(){return id;}
     public void setId(int id){this.id=id;}
     public LocalDate getDateReservation(){return dateReservation;}
@@ -69,4 +52,22 @@ public class ReservationVoyage {
         }
         this.nombreRervation=nombreRervation;
     }
+    public Voyage getVoyage(){return voyage;}
+    public void setVoyage(Voyage voyage){this.voyage=voyage;}
+
+    public ReservationVoyage(Integer id, Integer nombreRervation, LocalDate dateReservation, Voyage voyage, Client client, int etat) {
+        this.id = id;
+        this.nombreRervation = nombreRervation;
+        this.dateReservation = dateReservation;
+        this.voyage = voyage;
+        this.client = client;
+        this.etat = etat;
+    }
+
+    public ReservationVoyage(Integer nombreRervation, Voyage voyage, Client client) throws Exception {
+        setNombreRervation(nombreRervation);
+        this.voyage = voyage;
+        this.client = client;
+    }
+
 }

@@ -9,6 +9,7 @@ import project.projetmmebaovola.Model.entity.activite.MouvementStockActivite;
 import project.projetmmebaovola.Model.entity.activite.StockActivite;
 import project.projetmmebaovola.Model.entity.activite.VoyageActivite;
 import project.projetmmebaovola.Model.entity.bouquet.Bouquets;
+import project.projetmmebaovola.Model.entity.client.Client;
 import project.projetmmebaovola.Model.entity.personnel.Fonctions;
 import project.projetmmebaovola.Model.entity.personnel.Personnel;
 import project.projetmmebaovola.Model.entity.personnel.TypeMainOeuvre;
@@ -45,6 +46,8 @@ public class VoyageController {
     private final PersonnelRepository personnelRepository;
     private final FonctionsRepository fonctionsRepository;
     private final MouvementStockActiviteRepository mouvementStockActiviteRepository;
+    private final ClientRepository clientRepository;
+    private final VenteVoyageRepository venteVoyageRepository;
 
     public VoyageController(VoyageRepository voyageRepository,
                             BouquetsRepository bouquetsRepository,
@@ -60,7 +63,9 @@ public class VoyageController {
                             MainDOeuvreRepository mainDOeuvreRepository,
                             PersonnelRepository personnelRepository,
                             FonctionsRepository fonctionsRepository,
-                            MouvementStockActiviteRepository mouvementStockActiviteRepository) {
+                            MouvementStockActiviteRepository mouvementStockActiviteRepository,
+                            ClientRepository clientRepository,
+                            VenteVoyageRepository venteVoyageRepository) {
         this.voyageRepository = voyageRepository;
         this.bouquetsRepository = bouquetsRepository;
         this.typeLieuRepository = typeLieuRepository;
@@ -76,6 +81,8 @@ public class VoyageController {
         this.personnelRepository = personnelRepository;
         this.fonctionsRepository = fonctionsRepository;
         this.mouvementStockActiviteRepository = mouvementStockActiviteRepository;
+        this.clientRepository = clientRepository;
+        this.venteVoyageRepository = venteVoyageRepository;
     }
 
     // voyage
@@ -302,13 +309,42 @@ public class VoyageController {
         model.addAttribute("voyage",list);
         return "voyage/FormReservationVoyage";
     }
+    @GetMapping("/getListeReservation")
+    public String getListeReservation(Model model){
+        List<ReservationVoyage> reservationVoyages=reservationVoyageRepository.findAll();
+        model.addAttribute("reservation",reservationVoyages);
+        return "voyage/listeReservation";
+    }
+
+    @GetMapping("/getPagePayerReservation/{id}")
+    public String getPagePayerReservation(@PathVariable("id") int id,Model model){
+        Optional<ReservationVoyage> reservationVoyage=reservationVoyageRepository.findById(id);
+        if(reservationVoyage.isPresent()){
+            model.addAttribute("reservation",reservationVoyage.get());
+            model.addAttribute("prixApayer",reservationVoyage.get().getVoyage().getPrixUnitaireVoyage()*reservationVoyage.get().getNombreRervation());
+        }
+        return "voyage/PaymentReservation";
+    }
+    @PostMapping("/payerReservation")
+    public Object payer(@RequestParam("payementReservation") double payement,@RequestParam("id") int id){
+        Optional<ReservationVoyage> reservationVoyageOptional=reservationVoyageRepository.findById(id);
+        if(reservationVoyageOptional.isPresent()){
+            // effectuer la vente
+            VenteVoyage voyage=new VenteVoyage(reservationVoyageOptional.get(),payement);
+            venteVoyageRepository.save(voyage);
+        }
+        String returntype="/getListeReservation";
+        final RedirectView redirectView = new RedirectView(returntype, true);
+
+        return redirectView;
+    }
 
 
     @PostMapping("/submitReservationClient")
     public Object submitReservationClient(Model model,
                                           @RequestParam("idVoyage") int idVoyage,
                                           @RequestParam("nombreReservation") int nombreReservation,
-                                          @RequestParam("nomClient") String nomClient){
+                                          @RequestParam("nomClient") int nomClient){
         String redirection="/getFormReservationVoyage";
 
         try{
@@ -342,8 +378,11 @@ public class VoyageController {
                         mouvementStockActiviteRepository.save(mouvementStockActivite);
                     }
                     // enregistrement
-                    ReservationVoyage reservationVoyage1= new ReservationVoyage(nombreReservation,voyage);
-                    reservationVoyage1.setNomClient(nomClient);
+                    //todo mila amboarina le client ty atao optional
+                    Client client=clientRepository.findById(nomClient).get();
+                    ReservationVoyage reservationVoyage1= new ReservationVoyage(nombreReservation,voyage,client);
+
+                    reservationVoyage1.setClient(client);
                     reservationVoyageRepository.save(reservationVoyage1);
                 }
             }
@@ -459,7 +498,6 @@ public class VoyageController {
         }
         String link="/listVoyage";
         return new RedirectView(link, true);
-
     }
 
 

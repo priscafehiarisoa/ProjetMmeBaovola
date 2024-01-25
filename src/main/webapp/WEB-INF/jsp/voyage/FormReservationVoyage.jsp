@@ -2,11 +2,15 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="project.projetmmebaovola.Model.entity.*" %>
 <%@ page import="project.projetmmebaovola.Model.entity.voyage.Voyage" %>
+<%@ page import="project.projetmmebaovola.Model.entity.client.Client" %>
 
 <jsp:include page="../template/header.jsp" />
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%
+<%  List<Client>clients=new ArrayList<>();
+    if (request.getAttribute("client")!= null){
+        clients=(List<Client>) request.getAttribute("client");
+    }
     List<Voyage> voyageList=new ArrayList<>();
     if(request.getAttribute("voyage")!=null){
         voyageList= (List<Voyage>) request.getAttribute("voyage");
@@ -59,8 +63,13 @@
                     </div>
                     <%--                description de l'activité --%>
                     <div class="form-group">
-                        <label for="idEtudiant3">nom du client</label>
-                        <input type="text" id="idEtudiant3" class="form-control " name="nomClient" required>
+                        <label>client</label>
+                         <select name="nomClient">
+                             <%for (int i = 0; i <clients .size(); i++) {%>
+                             <option value=<%=clients.get(i).getId() %>><%=clients.get(i).getNomClient()%></option>
+                             <%}%>
+                         </select>
+
                     </div>
 
 

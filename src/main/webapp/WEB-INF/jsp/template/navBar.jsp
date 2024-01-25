@@ -25,6 +25,7 @@
             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/listVoyage">liste</a></li>
             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/getTarif">tarif voyage</a></li>
             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/getFormReservationVoyage">reservation</a></li>
+            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/getListeReservation">liste reservation</a></li>
             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/getBenefice">benefices</a></li>
             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/typeMO">Ajout type MO</a></li>
             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/formOuvrierVoyages">Ajout voyage MO</a></li>
