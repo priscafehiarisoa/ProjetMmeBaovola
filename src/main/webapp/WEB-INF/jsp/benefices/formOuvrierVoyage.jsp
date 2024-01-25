@@ -2,8 +2,9 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="project.projetmmebaovola.Model.entity.*" %>
 <%@ page import="project.projetmmebaovola.Model.entity.voyage.Voyage" %>
-<%@ page import="project.projetmmebaovola.Model.entity.voyage.TypeMainOeuvre" %>
 <%@ page import="project.projetmmebaovola.Model.entity.activite.Activite" %>
+<%@ page import="project.projetmmebaovola.Model.entity.personnel.TypeMainOeuvre" %>
+<%@ page import="project.projetmmebaovola.Model.entity.personnel.Personnel" %>
 
 <jsp:include page="../template/header.jsp" />
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -14,9 +15,9 @@
   if(request.getAttribute("voyage")!=null){
     voyageList= (List<Voyage>) request.getAttribute("voyage");
   }
-  List<TypeMainOeuvre> typeMainOeuvres=new ArrayList<>();
-  if(request.getAttribute("typeMO")!=null){
-    typeMainOeuvres= (List<TypeMainOeuvre>) request.getAttribute("typeMO");
+  List<Personnel> typeMainOeuvres=new ArrayList<>();
+  if(request.getAttribute("personnel")!=null){
+    typeMainOeuvres= (List<Personnel>) request.getAttribute("personnel");
   }
 
 %>
@@ -49,22 +50,22 @@
             </select>
           </div>
 
-          <%--                nom du activite  --%>
+          <%--                choix du personnel  --%>
         <div class="form-group ">
-          <label >choisir un type d'ouvrier </label>
+          <label >choisir le personnel de votre choix </label>
           <div class="form-check">
             <label class="form-check-label" ></label>
-            <select name="idTypeMO" id="" class="form-control" >
+            <select name="idPersonnel" id="" class="form-control" >
               <%for (int i = 0; i < typeMainOeuvres.size(); i++) {%>
-              <option value=<%=typeMainOeuvres.get(i).getId()%>><%=typeMainOeuvres.get(i).getNomMainD_oeuvre()%></option>
+              <option value=<%=typeMainOeuvres.get(i).getId()%>><%=typeMainOeuvres.get(i).getNomPersonnel()%></option>
               <%}%>
             </select>
           </div>
 
-          <%--                nombreMainOeuvre --%>
+          <%--                nombre de jours de travail --%>
           <div class="form-group">
-            <label for="idEtudiant2">nombre de main d'oeuvre  </label>
-            <input type="number" id="idEtudiant2" class="form-control " name="nombreMainOeuvre" required>
+            <label for="idEtudiant2">nombre de jours de travail de la main d'oeuvre  </label>
+            <input type="number" id="idEtudiant2" class="form-control " name="nombreJourTravail" required>
             <br>
           </div>
 

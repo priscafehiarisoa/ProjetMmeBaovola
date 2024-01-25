@@ -1,6 +1,8 @@
 package project.projetmmebaovola.Model.entity.voyage;
 
 import jakarta.persistence.*;
+import project.projetmmebaovola.Model.entity.personnel.Personnel;
+import project.projetmmebaovola.Model.entity.personnel.TypeMainOeuvre;
 
 @Entity
 public class MainDOeuvre {
@@ -12,41 +14,42 @@ public class MainDOeuvre {
     @JoinColumn(name = "voyage_id")
     private Voyage voyage;
 
-    private int nombreMainOeuvre;
+    private int nombreDeJoursDeTravail;
     @ManyToOne
-    @JoinColumn(name = "type_main_oeuvre_id")
-    private TypeMainOeuvre typeMainOeuvre;
+    @JoinColumn(name = "personnel_id")
+    private Personnel personnel;
 
-    public MainDOeuvre(Integer id, Voyage voyage, int nombreMainOeuvre, TypeMainOeuvre typeMainOeuvre) {
+    public Personnel getPersonnel() {
+        return personnel;
+    }
+
+    public int getNombreDeJoursDeTravail() {
+        return nombreDeJoursDeTravail;
+    }
+
+    public void setNombreDeJoursDeTravail(int nombreDeJoursDeTravail) {
+        this.nombreDeJoursDeTravail = nombreDeJoursDeTravail;
+    }
+
+    public void setPersonnel(Personnel personnel) {
+        this.personnel = personnel;
+    }
+
+    public MainDOeuvre(Integer id, Voyage voyage,  int nombreDeJoursDeTravail,Personnel personnel) {
         setId(id);
         setVoyage(voyage);
-        setNombreMainOeuvre(nombreMainOeuvre);
-        setTypeMainOeuvre(typeMainOeuvre);
+        setNombreDeJoursDeTravail(nombreDeJoursDeTravail);
+        setPersonnel(personnel);
     }
 
-    public MainDOeuvre(Voyage voyage, int nombreMainOeuvre, TypeMainOeuvre typeMainOeuvre) {
+    public MainDOeuvre(Voyage voyage,  int nombreDeJoursDeTravail,Personnel personnel) {
         setVoyage(voyage);
-        setNombreMainOeuvre(nombreMainOeuvre);
-        setTypeMainOeuvre(typeMainOeuvre);
+        setNombreDeJoursDeTravail(nombreDeJoursDeTravail);
+        setPersonnel(personnel);
     }
 
-    public TypeMainOeuvre getTypeMainOeuvre() {
-        return typeMainOeuvre;
-    }
-
-    public void setTypeMainOeuvre(TypeMainOeuvre typeMainOeuvre) {
-        this.typeMainOeuvre = typeMainOeuvre;
-    }
 
     public MainDOeuvre() {
-    }
-
-    public int getNombreMainOeuvre() {
-        return nombreMainOeuvre;
-    }
-
-    public void setNombreMainOeuvre(int nombreMainOeuvre) {
-        this.nombreMainOeuvre = nombreMainOeuvre;
     }
 
     public Voyage getVoyage() {
@@ -66,13 +69,5 @@ public class MainDOeuvre {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "MainDOeuvre{" +
-                "id=" + id +
-                ", voyage=" + voyage +
-                ", nombreMainOeuvre=" + nombreMainOeuvre +
-                ", typeMainOeuvre=" + typeMainOeuvre +
-                '}';
-    }
+
 }

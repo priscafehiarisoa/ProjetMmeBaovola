@@ -19,20 +19,32 @@
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Ajouter un stock d'activité </h4>
+            <h4 class="card-title">réservation de voyage</h4>
             <%--alert --%>
+            <% if (request.getAttribute("error")!=null){%>
                   <div class="alert alert-danger" role="alert">
                       <%= request.getAttribute("error")%>
                   </div>
+            <%}%>
+            <% if (request.getAttribute("errors")!=null){
+            List<String> errors= (List<String>) request.getAttribute("errors");
+                for (int i = 0; i < errors.size(); i++) {
+            %>
+                  <div class="alert alert-danger" role="alert">
+                      <%=errors.get(i)%>
+                  </div>
+            <%
+                }
+            }%>
 
             <%--  end alert --%>
-            <form  class="forms-sample" action="${pageContext.request.contextPath}/submitFormReservationVoyage" method="post" >
-                <%--                nom du activite  --%>
+            <form  class="forms-sample" action="${pageContext.request.contextPath}/submitReservationClient" method="post" >
+                <%--                nom de l'activite  --%>
                 <div class="form-group ">
-                    <label >choisir voyage </label>
+                    <label >choisir un voyage </label>
                     <div class="form-check">
                         <label class="form-check-label" ></label>
-                        <select name="idReservation" id="" class="form-control" >
+                        <select name="idVoyage" id="" class="form-control" >
                             <%for (int i = 0; i < voyageList.size(); i++) {%>
                             <option value=<%=voyageList.get(i).getId()%>><%=voyageList.get(i).getId()%>|debut: <%=voyageList.get(i).getDateDebutvoyage()%> fin: <%=voyageList.get(i).getDateFinVoyage()%> | <%=voyageList.get(i).getBouquets().getNomBouquet()%></option>
                             <%}%>

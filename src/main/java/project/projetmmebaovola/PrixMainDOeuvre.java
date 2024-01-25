@@ -17,11 +17,8 @@ public class PrixMainDOeuvre {
     @Column(name = "voyage_id")
     private Integer voyageId;
 
-    @Column(name = "sommetauxjournalier")
-    private Double sommetauxjournalier;
-
-    @Column(name = "sommetauxhoraire")
-    private Double sommetauxhoraire;
+    @Column(name = "salairepersonnel")
+    private Double salairepersonnel;
 
     @Column(name = "prixactivite")
     private Double prixactivite;
@@ -30,12 +27,8 @@ public class PrixMainDOeuvre {
         return voyageId;
     }
 
-    public Double getSommetauxjournalier() {
-        return sommetauxjournalier;
-    }
-
-    public Double getSommetauxhoraire() {
-        return sommetauxhoraire;
+    public Double getSalairepersonnel() {
+        return salairepersonnel;
     }
 
     public Double getPrixactivite() {

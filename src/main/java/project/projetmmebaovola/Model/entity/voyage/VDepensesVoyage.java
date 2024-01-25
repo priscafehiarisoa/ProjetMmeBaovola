@@ -24,11 +24,8 @@ public class VDepensesVoyage {
     @Column(name = "voyage_id")
     private Integer voyageId;
 
-    @Column(name = "sommetauxhoraire")
-    private Double sommetauxhoraire;
-
-    @Column(name = "sommetauxjournalier")
-    private Double sommetauxjournalier;
+    @Column(name = "salairepersonnel")
+    private Double salairepersonnel;
 
     @Column(name = "prixactivite")
     private Double prixactivite;
@@ -43,12 +40,8 @@ public class VDepensesVoyage {
         return voyageId;
     }
 
-    public Double getSommetauxhoraire() {
-        return sommetauxhoraire;
-    }
-
-    public Double getSommetauxjournalier() {
-        return sommetauxjournalier;
+    public Double getSalairepersonnel() {
+        return salairepersonnel;
     }
 
     public Double getPrixactivite() {
@@ -66,18 +59,13 @@ public class VDepensesVoyage {
     protected VDepensesVoyage() {
     }
 
-    @Override
-    public String toString() {
-        return "VDepensesVoyage{" +
-                "voyageId=" + voyageId +
-                ", sommetauxhoraire=" + sommetauxhoraire +
-                ", sommetauxjournalier=" + sommetauxjournalier +
-                ", prixactivite=" + prixactivite +
-                ", joursvoyage=" + joursvoyage +
-                ", prixUnitaireVoyage=" + prixUnitaireVoyage +
-                '}';
+    public VDepensesVoyage(Integer voyageId, Double salairepersonnel, Double prixactivite, Integer joursvoyage, Double prixUnitaireVoyage) {
+        this.voyageId = voyageId;
+        this.salairepersonnel = salairepersonnel;
+        this.prixactivite = prixactivite;
+        this.joursvoyage = joursvoyage;
+        this.prixUnitaireVoyage = prixUnitaireVoyage;
     }
-
     public HashMap<String , Object> getObjectFromDepenses(VoyageRepository voyageRepository, VoyageActiviteRepository voyageActiviteRepository){
         Optional<Voyage> voyageOptional=voyageRepository.findById(this.getVoyageId());
         HashMap<String,Object> hashMap=new HashMap<>();
@@ -87,14 +75,14 @@ public class VDepensesVoyage {
             voyage.setListeActivite(voyageActiviteRepository.findVoyageActiviteByVoyage(voyage));
         }
         hashMap.put("voyage",voyage);
-        hashMap.put("benefices",getPrixUnitaireVoyage()-((getSommetauxjournalier()*getJoursvoyage())+getPrixactivite()));
-        hashMap.put("tauxJournalierOuvriers",getSommetauxjournalier());
+        hashMap.put("benefices",getPrixUnitaireVoyage()-(getSalairepersonnel()+getPrixactivite()));
+        hashMap.put("salairePersonnel",getSalairepersonnel());
         hashMap.put("prixActivite",getPrixactivite());
         hashMap.put("prixUnitaireVoyage",getPrixUnitaireVoyage());
         return hashMap;
     }
 
-    public static List<HashMap<String,Object>> getBeneficesParFourchette(double prix1, double prix2, VDepensesVoyageRepository vDepensesVoyageRepository, VoyageRepository voyageRepository,VoyageActiviteRepository voyageActiviteRepository){
+    public static List<HashMap<String,Object>> getBeneficesParFourchette(double prix1, double prix2, VDepensesVoyageRepository vDepensesVoyageRepository, VoyageRepository voyageRepository, VoyageActiviteRepository voyageActiviteRepository){
         List<VDepensesVoyage> depensesVoyages=vDepensesVoyageRepository.getBeneficesVoyageEntreDeuxFourchetteDePrix(prix1,prix2);
         List<HashMap<String,Object>> hashMaps=new ArrayList<>();
         for (int i = 0; i < depensesVoyages.size(); i++) {

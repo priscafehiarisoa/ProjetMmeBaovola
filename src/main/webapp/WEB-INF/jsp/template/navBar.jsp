@@ -48,6 +48,23 @@
         </div>
       </li>
 
+      <li class="nav-item nav-category">Personnel</li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#personnel" aria-expanded="false"
+           aria-controls="personnel">
+          <i class="menu-icon mdi mdi-map-check-outline"></i>
+          <span class="menu-title">Personnel</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="personnel">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"><a class="nav-link" href="/formAjoutPersonnel">ajouter personnel</a></li>
+            <li class="nav-item"><a class="nav-link" href="/listePersonnel">liste</a></li>
+            <li class="nav-item"><a class="nav-link" href="/listFonction">liste fonctions</a></li>
+          </ul>
+        </div>
+      </li>
+
       <li class="nav-item nav-category">Activités</li>
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#activite" aria-expanded="false"

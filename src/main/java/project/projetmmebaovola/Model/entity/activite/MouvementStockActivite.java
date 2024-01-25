@@ -42,7 +42,7 @@ public class MouvementStockActivite {
     }
 
     public void setTypeMouvement(int typeMouvement) throws Exception {
-        if(typeMouvement!=-1 || typeMouvement!=1){
+        if(typeMouvement!=-1 && typeMouvement!=1){
             throw new Exception("type de mouvement invalide");
         }
         this.typeMouvement = typeMouvement;

@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import project.projetmmebaovola.Model.entity.activite.Activite;
 import project.projetmmebaovola.Model.entity.activite.CateorieActivite;
 import project.projetmmebaovola.Model.entity.bouquet.Bouquets;
+import project.projetmmebaovola.Model.entity.personnel.Fonctions;
+import project.projetmmebaovola.Model.entity.personnel.TypeMainOeuvre;
 import project.projetmmebaovola.Model.entity.voyage.*;
 import project.projetmmebaovola.Repository.TypeMainOeuvreRepository;
 import project.projetmmebaovola.Repository.*;
@@ -29,7 +31,8 @@ public class Main {
                                          TypeMainOeuvreRepository typeMainOeuvreRepository,
                                          VoyageRepository voyageRepository,
                                          MainDOeuvreRepository mainDOeuvreRepository,
-                                         VDepensesVoyageRepository vDepensesVoyageRepository){
+                                         VDepensesVoyageRepository vDepensesVoyageRepository,
+                                         FonctionsRepository fonctionsRepository){
         return args -> {
             activiteRepository.findAll().forEach(System.out::println);
 
@@ -61,26 +64,36 @@ public class Main {
             cateorieActiviteRepository.saveAll(cateorieActiviteList);
 
             List<TypeMainOeuvre> typeMainOeuvreList=new ArrayList<>();
-            typeMainOeuvreList.add(new TypeMainOeuvre(1,"chauffeur",500,500*24));
-            typeMainOeuvreList.add(new TypeMainOeuvre(2,"guide",600,600*24));
-            typeMainOeuvreList.add(new TypeMainOeuvre(3,"cuisinière",300,300*24));
-            typeMainOeuvreList.add(new TypeMainOeuvre(4,"accompagnateur",800,800*24));
+            typeMainOeuvreList.add(new TypeMainOeuvre(1,"chauffeur",500,8));
+            typeMainOeuvreList.add(new TypeMainOeuvre(2,"guide",600,6));
+            typeMainOeuvreList.add(new TypeMainOeuvre(3,"cuisinière",300,7));
+            typeMainOeuvreList.add(new TypeMainOeuvre(4,"accompagnateur",800,10));
             typeMainOeuvreRepository.saveAll(typeMainOeuvreList);
 
             Optional<Voyage> v=voyageRepository.findById(1);
             if(v.isPresent()) {
                 List<MainDOeuvre> mainDOeuvreList = new ArrayList<>();
-                mainDOeuvreList.add(new MainDOeuvre(1,v.get(),2,typeMainOeuvreList.get(0)));
-                mainDOeuvreList.add(new MainDOeuvre(2,v.get(),2,typeMainOeuvreList.get(1)));
-                mainDOeuvreList.add(new MainDOeuvre(3,v.get(),4,typeMainOeuvreList.get(2)));
-                mainDOeuvreList.add(new MainDOeuvre(4,v.get(),1,typeMainOeuvreList.get(3)));
-                mainDOeuvreRepository.saveAll(mainDOeuvreList);
-                mainDOeuvreRepository.getMainDOeuvreByVoyage(v.get()).forEach(System.out::println);
+//                mainDOeuvreList.add(new MainDOeuvre(1,v.get(),typeMainOeuvreList.get(0)));
+//                mainDOeuvreList.add(new MainDOeuvre(2,v.get(),typeMainOeuvreList.get(1)));
+//                mainDOeuvreList.add(new MainDOeuvre(3,v.get(),typeMainOeuvreList.get(2)));
+//                mainDOeuvreList.add(new MainDOeuvre(4,v.get(),typeMainOeuvreList.get(3)));
+//                mainDOeuvreRepository.saveAll(mainDOeuvreList);
+//                mainDOeuvreRepository.getMainDOeuvreByVoyage(v.get()).forEach(System.out::println);
 
                 vDepensesVoyageRepository.getBeneficesVoyageEntreDeuxFourchetteDePrix(100,1000000).forEach(System.out::println);
 
                 activiteRepository.getActiveActivite().forEach(System.out::println);
+
             }
+            System.out.println("=====");
+            List<Fonctions> fonctions=new ArrayList<>();
+            fonctions.add(new Fonctions(1,"agent simple",0,2,1));
+            fonctions.add(new Fonctions(2,"senior",3,6,2));
+            fonctions.add(new Fonctions(3,"expert",7,100,3));
+            fonctionsRepository.saveAll(fonctions);
+
+            System.out.println(fonctionsRepository.getFonctionByAnneeTravail(3).get());;
+
 //            mouvementStockActiviteRepository.getResteStock().forEach(System.out::println);
 
         };

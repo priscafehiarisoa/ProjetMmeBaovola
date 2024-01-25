@@ -4,14 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-import project.projetmmebaovola.Model.entity.activite.Activite;
-import project.projetmmebaovola.Model.entity.activite.CateorieActivite;
-import project.projetmmebaovola.Model.entity.activite.HistoriquePrixActivite;
-import project.projetmmebaovola.Model.entity.activite.StockActivite;
-import project.projetmmebaovola.Repository.ActiviteRepository;
-import project.projetmmebaovola.Repository.CateorieActiviteRepository;
-import project.projetmmebaovola.Repository.HistoriquePrixActiviteRepository;
-import project.projetmmebaovola.Repository.StockActiviteRepository;
+import project.projetmmebaovola.Model.entity.activite.*;
+import project.projetmmebaovola.Repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +17,16 @@ public class ActiviteController {
     private final ActiviteRepository activiteRepository;
     private final StockActiviteRepository stockActiviteRepository;
     private final HistoriquePrixActiviteRepository historiquePrixActiviteRepository;
+    private final MouvementStockActiviteRepository mouvementStockActiviteRepository;
 
     public ActiviteController(CateorieActiviteRepository cateorieActiviteRepository, ActiviteRepository activiteRepository, StockActiviteRepository stockActiviteRepository,
-                              HistoriquePrixActiviteRepository historiquePrixActiviteRepository) {
+                              HistoriquePrixActiviteRepository historiquePrixActiviteRepository,
+                              MouvementStockActiviteRepository mouvementStockActiviteRepository) {
         this.cateorieActiviteRepository = cateorieActiviteRepository;
         this.activiteRepository = activiteRepository;
         this.stockActiviteRepository = stockActiviteRepository;
         this.historiquePrixActiviteRepository = historiquePrixActiviteRepository;
+        this.mouvementStockActiviteRepository = mouvementStockActiviteRepository;
     }
 
     @GetMapping("/formActivite")
@@ -90,6 +87,25 @@ public class ActiviteController {
         }
         String redirection="/getFormStockActivite";
         return new RedirectView(redirection, true);
+    }
+
+    @PostMapping("/submitMouvementStockActivite")
+    public Object submitMouvementStockActivite(Model model,@RequestParam("nombreStock") int nombreStock,@RequestParam("activite") int idActivite) {
+        try{
+        Optional<Activite> optionalActivite=activiteRepository.findById(idActivite);
+        if(optionalActivite.isPresent()){
+            MouvementStockActivite mouvementStockActivite=new MouvementStockActivite(1,optionalActivite.get(),nombreStock);
+            mouvementStockActiviteRepository.save(mouvementStockActivite);
+        }
+        }catch (Exception e){
+            model.addAttribute("error",e.getMessage());
+            List<Activite> list= activiteRepository.getActiveActivite();
+            model.addAttribute("activite",list);
+            return "activite/formStockActivite";
+        }
+        String redirection="/getFormStockActivite";
+        return new RedirectView(redirection, true);
+
     }
 
     @PostMapping("/updateActivite")

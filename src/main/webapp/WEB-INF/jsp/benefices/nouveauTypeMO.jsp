@@ -34,13 +34,13 @@
                         <%--                tauxHoraire --%>
                     <div class="form-group">
                         <label for="idEtudiant2">tauxHoraire </label>
-                        <input type="text" id="tauxHoraire" class="form-control " name="tauxHoraire" required>
+                        <input type="number" id="tauxHoraire" class="form-control " name="tauxHoraire" required>
                         <br>
                     </div>
-                    <%--                tauxJournalier --%>
+                    <%--                heurede travail--%>
                     <div class="form-group">
-                        <label for="tauxJournalier">tauxJournalier</label>
-                        <input type="text" id="tauxJournalier" class="form-control " name="tauxJournalier" required>
+                        <label>heureDeTravail</label>
+                        <input type="number" id="heuredetravail" class="form-control " name="heureDeTravail" required>
                     </div>
 
 

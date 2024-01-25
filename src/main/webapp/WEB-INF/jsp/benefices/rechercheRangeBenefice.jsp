@@ -51,7 +51,7 @@
                         <th>type de voyage</th>
                         <th>activités</th>
                         <th> benefices</th>
-                        <th> taux Journalier ouvriers</th>
+                        <th> salaires ouvriers</th>
                         <th> prix Activite</th>
                         <th> prix unitaire Voyage</th>
                     </tr>
@@ -61,8 +61,7 @@
                             for (HashMap<String,Object> voyage:hashMaps) { %>
                     <tr>
                         <td><%=((Voyage)voyage.get("voyage")).getId()%></td>
-                        <td><%=((Voyage)voyage.get("voyage")).getDateDebutvoyage()%></td>
-                        <td><%=((Voyage)voyage.get("voyage")).getDateFinVoyage()%></td>
+                        <td><%=((Voyage)voyage.get("voyage")).getDateDebutvoyage()%> - <%=((Voyage)voyage.get("voyage")).getDateFinVoyage()%></td>
                         <td>
                             <ul>
                                 <li><%=((Voyage)voyage.get("voyage")).getBouquets().getNomBouquet()%></li>
@@ -81,7 +80,7 @@
                             <%=voyage.get("benefices")%>
                         </td>
                         <td>
-                            <%=voyage.get("tauxJournalierOuvriers")%>
+                            <%=voyage.get("salairePersonnel")%>
                         </td>
                         <td>
                             <%=voyage.get("prixActivite")%>

@@ -1,4 +1,4 @@
-package project.projetmmebaovola.Model.entity.voyage;
+package project.projetmmebaovola.Model.entity.personnel;
 
 import jakarta.persistence.*;
 
@@ -12,6 +12,15 @@ public class TypeMainOeuvre {
     private double tauxHoraire;
     private double tauxJournalier;
 
+    public double getTauxJournalier() {
+        return tauxJournalier;
+    }
+
+    public void setTauxJournalier(double tauxJournalier) {
+        this.tauxJournalier = tauxJournalier;
+    }
+
+    private int heureDeTravail;
     public String getNomMainD_oeuvre() {
         return nomMainD_oeuvre;
     }
@@ -31,17 +40,16 @@ public class TypeMainOeuvre {
         this.tauxHoraire = tauxHoraire;
     }
 
-    public double getTauxJournalier() {
-        return tauxJournalier;
-    }
 
-    public void setTauxJournalier(double tauxJournalier) throws Exception {
-        if(tauxJournalier<0){
-            throw new Exception("taux journalier negatif");
+
+    public void setHeureDeTravail(int heureDeTravail) throws Exception {
+        if(heureDeTravail<0){
+            throw new Exception("heur de travail negative");
 
         }
-        this.tauxJournalier = tauxJournalier;
+        this.heureDeTravail = heureDeTravail;
     }
+    public int getHeureDeTravail(){return  heureDeTravail;}
 
     public Integer getId() {
         return id;
@@ -51,16 +59,17 @@ public class TypeMainOeuvre {
         this.id = id;
     }
 
-    public TypeMainOeuvre(Integer id, String nomMainD_oeuvre, double tauxHoraire, double tauxJournalier) throws Exception {
+    public TypeMainOeuvre(Integer id, String nomMainD_oeuvre, double tauxHoraire, int heureTravail) throws Exception {
         setId(id);
         setNomMainD_oeuvre(nomMainD_oeuvre);
         setTauxHoraire(tauxHoraire);
-        setTauxJournalier(tauxJournalier);
+        setHeureDeTravail(heureTravail);
+
     }
     public TypeMainOeuvre( String nomMainD_oeuvre, double tauxHoraire, double tauxJournalier) throws Exception {
         setNomMainD_oeuvre(nomMainD_oeuvre);
         setTauxHoraire(tauxHoraire);
-        setTauxJournalier(tauxJournalier);
+
     }
 
     public TypeMainOeuvre() {
@@ -72,7 +81,7 @@ public class TypeMainOeuvre {
                 "id=" + id +
                 ", nomMainD_oeuvre='" + nomMainD_oeuvre + '\'' +
                 ", tauxHoraire=" + tauxHoraire +
-                ", tauxJournalier=" + tauxJournalier +
+
                 '}';
     }
 }

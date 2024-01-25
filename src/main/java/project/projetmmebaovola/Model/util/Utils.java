@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
@@ -51,6 +52,16 @@ public class Utils {
         return DL;
     }
 
+    public static int differenceInYears(LocalDate startDate, LocalDate endDate) {
+        // Calcul de la différence en années
+        Period period = Period.between(startDate, endDate);
+
+        // Récupération de la différence en années
+        int years = period.getYears();
+
+        return years;
+    }
+
 
     public static void main(String[] args) throws ParseException {
         String dateString = "2023-12-11 09:30";
@@ -64,6 +75,10 @@ public class Utils {
         long totalSeconds = (long) (minutesAndSeconds * 60);
         LocalTime finalTime = initialTime.plus(totalSeconds, ChronoUnit.SECONDS);
         System.out.println(finalTime);
+
+        LocalDate localDate= convertToLocalDate("2023-12-11");
+        LocalDate localDate2= convertToLocalDate("2024-12-11");
+        System.out.println(differenceInYears(localDate,localDate2));
 
     }
 }

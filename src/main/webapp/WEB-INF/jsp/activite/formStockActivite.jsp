@@ -22,15 +22,17 @@
   <div class="card">
     <div class="card-body">
       <h4 class="card-title">Ajouter un stock d'activité </h4>
-      <%= request.getAttribute("error")%>
       <%--alert --%>
-      <%--      <div class="alert alert-danger" role="alert">--%>
-      <%--        <%=error%>--%>
-      <%--      </div>--%>
-
+      <% if(request.getAttribute("error")!=null){%>
+      <div class="alert alert-danger" role="alert">
+        <%= request.getAttribute("error")%>
+      </div>
+     <% }%>
       <%--  end alert --%>
-      <form  class="forms-sample" action="${pageContext.request.contextPath}/submitStockActivite" method="post" >
-        <%--                nom du activite  --%>
+
+
+      <form  class="forms-sample" action="${pageContext.request.contextPath}/submitMouvementStockActivite" method="post" >
+        <%--               choix de l'activite   --%>
           <div class="form-group ">
             <label >choisir une activité </label>
             <div class="form-check">
@@ -42,9 +44,9 @@
               </select>
             </div>
 
-          <%--                description de l'activité --%>
+          <%--                nombre de stock de l'activité --%>
         <div class="form-group">
-          <label for="idEtudiant2">description de l'activité  </label>
+          <label for="idEtudiant2">nombre ajouté en stock </label>
           <textarea id="idEtudiant2" class="form-control " name="nombreStock" required> </textarea>
           <br>
         </div>

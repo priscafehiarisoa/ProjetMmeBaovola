@@ -5,9 +5,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import project.projetmmebaovola.Model.entity.activite.Activite;
+import project.projetmmebaovola.Model.entity.activite.MouvementStockActivite;
 import project.projetmmebaovola.Model.entity.activite.StockActivite;
 import project.projetmmebaovola.Model.entity.activite.VoyageActivite;
 import project.projetmmebaovola.Model.entity.bouquet.Bouquets;
+import project.projetmmebaovola.Model.entity.personnel.Fonctions;
+import project.projetmmebaovola.Model.entity.personnel.Personnel;
+import project.projetmmebaovola.Model.entity.personnel.TypeMainOeuvre;
 import project.projetmmebaovola.Model.entity.voyage.*;
 import project.projetmmebaovola.Model.util.ResteStock;
 import project.projetmmebaovola.Model.view.Recherche;
@@ -38,6 +42,9 @@ public class VoyageController {
     private final VRestestockactiviteRepository vRestestockactiviteRepository;
     private final TypeMainOeuvreRepository typeMainOeuvreRepository;
     private final MainDOeuvreRepository mainDOeuvreRepository;
+    private final PersonnelRepository personnelRepository;
+    private final FonctionsRepository fonctionsRepository;
+    private final MouvementStockActiviteRepository mouvementStockActiviteRepository;
 
     public VoyageController(VoyageRepository voyageRepository,
                             BouquetsRepository bouquetsRepository,
@@ -50,7 +57,10 @@ public class VoyageController {
                             ReservationVoyageRepository reservationVoyageRepository,
                             VRestestockactiviteRepository vRestestockactiviteRepository,
                             TypeMainOeuvreRepository typeMainOeuvreRepository,
-                            MainDOeuvreRepository mainDOeuvreRepository) {
+                            MainDOeuvreRepository mainDOeuvreRepository,
+                            PersonnelRepository personnelRepository,
+                            FonctionsRepository fonctionsRepository,
+                            MouvementStockActiviteRepository mouvementStockActiviteRepository) {
         this.voyageRepository = voyageRepository;
         this.bouquetsRepository = bouquetsRepository;
         this.typeLieuRepository = typeLieuRepository;
@@ -63,6 +73,9 @@ public class VoyageController {
         this.vRestestockactiviteRepository = vRestestockactiviteRepository;
         this.typeMainOeuvreRepository = typeMainOeuvreRepository;
         this.mainDOeuvreRepository = mainDOeuvreRepository;
+        this.personnelRepository = personnelRepository;
+        this.fonctionsRepository = fonctionsRepository;
+        this.mouvementStockActiviteRepository = mouvementStockActiviteRepository;
     }
 
     // voyage
@@ -76,7 +89,7 @@ public class VoyageController {
     }
     @GetMapping({"/","/listVoyage"})
     public String getListVoyage(Model model){
-        List<Voyage> voyage=voyageRepository.findAll();
+        List<Voyage> voyage=voyageRepository.getVoyageByEtat(0);
         for (int i = 0; i < voyage.size(); i++) {
             voyage.get(i).setListeActivite(voyageActiviteRepository.findVoyageActiviteByVoyage(voyage.get(i)));
         }
@@ -285,52 +298,69 @@ public class VoyageController {
     @GetMapping("/getFormReservationVoyage")
     public String getFormReservationVoyage (Model model){
         List<Voyage> list= voyageRepository.findAll();
+        System.out.println(model.getAttribute("errors"));
         model.addAttribute("voyage",list);
         return "voyage/FormReservationVoyage";
     }
 
-    @PostMapping("/submitFormReservationVoyage")
-    public Object submitFormReservationVoyage(Model model,@RequestParam() int idReservation,@RequestParam("nombreReservation") int nombreReservation, @RequestParam("nomClient") String nomClient){
-        try{
-            Optional<Voyage> reservationVoyageOptional= voyageRepository.findById(idReservation);
-            if(reservationVoyageOptional.isPresent()){
-                //verification si il reste des activites
-                Voyage voyage= reservationVoyageOptional.get();
-                voyage.setListeActivite(voyageActiviteRepository.findVoyageActiviteByVoyage(voyage));
-                List<VoyageActivite> listeVoyageActivite=voyageActiviteRepository.findVoyageActiviteByVoyage(voyage);
-                for (int i = 0; i < voyage.getListeActivite().size(); i++) {
-                    System.out.println("act");
-                    System.out.println("reste stock = "+activiteRepository.getResteStock(voyage.getListeActivite().get(i).getId()));
-                    double reste= activiteRepository.getResteStock(voyage.getListeActivite().get(i).getId());
 
-                    if(reste<=0 || reste-(voyage.getListeActivite().get(i).getQuantite()*nombreReservation)<0){
-                        model.addAttribute("error","il ne reste plus de "+voyage.getListeActivite().get(i).getActivite().getNomActivite()+"dans notre stock impossible de faire ce voyage | quantite manquant : ");
-                        List<Voyage> list= voyageRepository.findAll();
-                        model.addAttribute("activite",list);
-                        return "voyage/FormReservationVoyage";
+    @PostMapping("/submitReservationClient")
+    public Object submitReservationClient(Model model,
+                                          @RequestParam("idVoyage") int idVoyage,
+                                          @RequestParam("nombreReservation") int nombreReservation,
+                                          @RequestParam("nomClient") String nomClient){
+        String redirection="/getFormReservationVoyage";
+
+        try{
+            // getVoyage
+            Optional<Voyage> optionalVoyage=voyageRepository.findById(idVoyage);
+            List<String> errors=new ArrayList<>();
+            if(optionalVoyage.isPresent()){
+                Voyage voyage=optionalVoyage.get();
+                voyage.setListeActivite(voyageActiviteRepository.findVoyageActiviteByVoyage(voyage));
+                for (int i = 0; i < voyage.getListeActivite().size(); i++) {
+                    VRestestockactivite restestockactivite=vRestestockactiviteRepository.getVRestestockactiviteByIdActivite(voyage.getListeActivite().get(i).getActivite().getId());
+                    double resteStock= restestockactivite.getRestestock();
+                    // condition : restestock >= nombreActivite*nombre de reservation
+                    // je dois ajouter les differences
+                    double nombreActiviteNecessaires=voyage.getListeActivite().get(i).getQuantite()*nombreReservation;
+
+                    if(resteStock<nombreActiviteNecessaires){
+                        errors.add("il manque "+(nombreActiviteNecessaires-resteStock)+" billets pour l'activite "+voyage.getListeActivite().get(i).getActivite().getNomActivite());
                     }
                 }
-                // enregistrement
-                ReservationVoyage reservationVoyage1= new ReservationVoyage(nombreReservation,reservationVoyageOptional.get());
-            reservationVoyage1.setNomClient(nomClient);
-            reservationVoyageRepository.save(reservationVoyage1);
-            String redirection="/getFormReservationVoyage";
-            return new RedirectView(redirection, true);}
+                if(errors.size()>0){
+                    model.addAttribute("errors",errors);
+                    List<Voyage> list= voyageRepository.getVoyageByEtat(0);
+                    model.addAttribute("activite",list);
+                    return "voyage/FormReservationVoyage";
+                }
+                else{
+                    // enregistrement des mouvements
+                    for (int i = 0; i < voyage.getListeActivite().size(); i++) {
+                        MouvementStockActivite mouvementStockActivite=new MouvementStockActivite(-1,voyage.getListeActivite().get(i).getActivite(),voyage.getListeActivite().get(i).getQuantite()*nombreReservation);
+                        mouvementStockActiviteRepository.save(mouvementStockActivite);
+                    }
+                    // enregistrement
+                    ReservationVoyage reservationVoyage1= new ReservationVoyage(nombreReservation,voyage);
+                    reservationVoyage1.setNomClient(nomClient);
+                    reservationVoyageRepository.save(reservationVoyage1);
+                }
+            }
             else{
-                model.addAttribute("error","le voyage sélectionné n'existe pas");
-                List<Voyage> list= voyageRepository.findAll();
+                model.addAttribute("error","voyage introuvable");
+                List<Voyage> list= voyageRepository.getVoyageByEtat(0);
                 model.addAttribute("activite",list);
                 return "voyage/FormReservationVoyage";
             }
-        }
-        catch (Exception e){
-            String error=e.getMessage()+" | "+e.getCause() +" | "+e.getLocalizedMessage()+" | "+e.getStackTrace();
-            model.addAttribute("error",error);
-            List<Voyage> list= voyageRepository.findAll();
+        }catch (Exception e){
+
+            model.addAttribute("error",e.getMessage());
+            List<Voyage> list= voyageRepository.getVoyageByEtat(0);
             model.addAttribute("activite",list);
             return "voyage/FormReservationVoyage";
         }
-
+        return new RedirectView(redirection, true);
     }
 
     @GetMapping("/getResteStock")
@@ -345,7 +375,7 @@ public class VoyageController {
     }
 
     @PostMapping("/newTypeMO")
-    public String newTypeMo(@RequestParam("nomMainD_oeuvre")String nomMainD_oeuvre,@RequestParam("tauxHoraire") double tauxHoraire,@RequestParam("tauxJournalier") double tauxJournalier ,Model model) throws Exception {
+    public String newTypeMo(@RequestParam("nomMainD_oeuvre")String nomMainD_oeuvre,@RequestParam("tauxHoraire") double tauxHoraire,@RequestParam("heureDeTravail") int heureDeTravail,Model model) throws Exception {
        TypeMainOeuvre typeMainOeuvre=new TypeMainOeuvre();
        typeMainOeuvre.setNomMainD_oeuvre(nomMainD_oeuvre);
         if(typeMainOeuvre.getTauxJournalier()<0){
@@ -357,8 +387,8 @@ public class VoyageController {
         }
         else {
             try{
-            typeMainOeuvre.setTauxJournalier(tauxJournalier);
-            typeMainOeuvre.setTauxHoraire(tauxHoraire);
+                typeMainOeuvre.setHeureDeTravail(heureDeTravail);
+                typeMainOeuvre.setTauxHoraire(tauxHoraire);
                 typeMainOeuvreRepository.save(typeMainOeuvre);
 
             }catch (Exception e){
@@ -367,6 +397,28 @@ public class VoyageController {
         }
         return "benefices/nouveauTypeMO";
     }
+
+    // nouvel employe
+    @GetMapping("/formAjoutPersonnel")
+    public String formAjoutPersonnel(Model model){
+        model.addAttribute("TypeMainOeuvre",typeMainOeuvreRepository.findAll());
+        return "personnel/ajoutPersonnel";
+    }
+    @PostMapping("/newPersonnel")
+    public Object newPersonnel(@RequestParam("Nom") String nom,@RequestParam("dateEmbauche") LocalDate dateEmbauche,@RequestParam("typeMainOeuvre") int idMO){
+        Personnel personnel=new Personnel();
+        personnel.setNomPersonnel(nom);
+        personnel.setDateEmbauche(dateEmbauche);
+        Optional<TypeMainOeuvre> typeMainOeuvre=typeMainOeuvreRepository.findById(idMO);
+        if(typeMainOeuvre.isPresent()){
+            personnel.setTypeMainOeuvre(typeMainOeuvre.get());
+            personnelRepository.save(personnel);
+        }
+        String redirection="/formAjoutPersonnel";
+        return new RedirectView(redirection, true);
+
+    }
+
     @GetMapping("/typeMO")
     public String typeMo(Model model){
 //        model.addAttribute(typeMainOeuvreRepository.findAll());
@@ -375,25 +427,39 @@ public class VoyageController {
     @GetMapping("/formOuvrierVoyages")
     public String formOuvrierVoyage(Model model){
         model.addAttribute("voyage",voyageRepository.findAll());
-        model.addAttribute("typeMO",typeMainOeuvreRepository.findAll());
+        model.addAttribute("personnel",personnelRepository.findAll());
         return "benefices/formOuvrierVoyage";
     }
     @PostMapping("/newOuvrierVoyage")
-    public Object newOuvrierVoyage(@RequestParam("idVoyage") int idVoyage,@RequestParam("idTypeMO") int typeMo,@RequestParam("nombreMainOeuvre") int nombreMainOevre, Model model){
-        if(nombreMainOevre<0){
-            model.addAttribute("error","nombre main d'oeuvre negatif");
+    public Object newOuvrierVoyage(@RequestParam("idVoyage") int idVoyage,@RequestParam("nombreJourTravail") int nombreJourTravail,@RequestParam("idPersonnel") int idPersonnel, Model model){
+        if(nombreJourTravail<0){
+            model.addAttribute("error","nombre de jours de travail negatif");
             return "benefices/formOuvrierVoyage";
         }
         Optional<Voyage> optionalVoyage=voyageRepository.findById(idVoyage);
         if(optionalVoyage.isPresent()) {
-            Optional<TypeMainOeuvre> typeMainOeuvre=typeMainOeuvreRepository.findById(typeMo);
-            if(typeMainOeuvre.isPresent()) {
-                MainDOeuvre mainDOeuvre = new MainDOeuvre(optionalVoyage.get(),nombreMainOevre,typeMainOeuvre.get());
-                mainDOeuvreRepository.save(mainDOeuvre);
-            }
+                Optional<Personnel> personnelOptional=personnelRepository.findById(idPersonnel);
+                if(personnelOptional.isPresent()) {
+                    MainDOeuvre mainDOeuvre = new MainDOeuvre(optionalVoyage.get(),nombreJourTravail,personnelOptional.get());
+                    mainDOeuvreRepository.save(mainDOeuvre);
+                }
+
         }
          String redirection="/formOuvrierVoyages";
         return new RedirectView(redirection, true);
+    }
+
+    @GetMapping("/deleteVoyage/{id}")
+    public Object deleteVoyage(@PathVariable("id") int id,Model model){
+        Optional<Voyage> optionalVoyage=voyageRepository.findById(id);
+        if(optionalVoyage.isPresent()){
+            Voyage voyage=optionalVoyage.get();
+            voyage.setEtat(-1);
+            voyageRepository.save(voyage);
+        }
+        String link="/listVoyage";
+        return new RedirectView(link, true);
+
     }
 
 
